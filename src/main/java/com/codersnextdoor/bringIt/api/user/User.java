@@ -28,9 +28,9 @@ public class User {
     @Column(name="user_id")
     private long userId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "address_id")
-//    private Address address;
+     @ManyToOne
+     @JoinColumn(name = "address_id")
+     private Address address;
 
 
     @OneToMany(mappedBy="userOffered")
