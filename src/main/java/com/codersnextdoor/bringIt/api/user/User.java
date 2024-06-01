@@ -1,12 +1,14 @@
 package com.codersnextdoor.bringIt.api.user;
 
 import com.codersnextdoor.bringIt.api.address.Address;
+import com.codersnextdoor.bringIt.api.todo.Todo;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name= "TB_USER")
@@ -23,13 +25,40 @@ public class User {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
-
+    @Column(name="user_id")
     private long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+//    @ManyToOne
+//    @JoinColumn(name = "address_id")
+//    private Address address;
 
+
+    @OneToMany(mappedBy="userOffered")
+    private Set<Todo> todosOffered;
+
+    @OneToMany(mappedBy="userTaken")
+    private Set<Todo> todosTaken;
+
+
+
+    public Set<Todo> getTodosOffered() {
+        return todosOffered;
+    }
+
+    public void setTodosOffered(Set<Todo> todosOffered) {
+        this.todosOffered = todosOffered;
+    }
+
+    public Set<Todo> getTodosTaken() {
+        return todosTaken;
+    }
+
+    public void setTodosTaken(Set<Todo> todosTaken) {
+        this.todosTaken = todosTaken;
+    }
+
+
+    private String username;
     private String firstName;
 
     private String lastName;

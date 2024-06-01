@@ -25,16 +25,47 @@ import java.time.LocalDateTime;
 
         private long todoId;
 
-        @ManyToOne
-        @JoinColumn(name = "user_id")
-        private User createdByUser;
+
+
 
         /*
         @ManyToOne
-        @JoinColumn(name = "user_id")
+        @JoinColumn(name = "created_by_user_id", referencedColumnName = "user_id")
+        private User createdByUser;
+
+
+        @ManyToOne
+        @JoinColumn(name = "taken_by_user_id", referencedColumnName = "user_id")
         private User takenByUser;
-        */
-        private String location;
+*/
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "useroffered_id", referencedColumnName = "user_id")
+    private User userOffered;
+
+    @ManyToOne
+    @JoinColumn(name = "usertaken_id", referencedColumnName = "user_id")
+    private User userTaken;
+
+    public User getUserTaken() {
+        return userTaken;
+    }
+
+    public void setUserTaken(User userTaken) {
+        this.userTaken = userTaken;
+    }
+
+    public User getUserOffered() {
+        return userOffered;
+    }
+
+    public void setUserOffered(User userOffered) {
+        this.userOffered = userOffered;
+    }
+
+    private String location;
 
         private String title;
 
@@ -67,6 +98,8 @@ import java.time.LocalDateTime;
         this.status = status;
     }
 
+
+    /*
     // getter and setter
     public User getCreatedByUser() {
         return createdByUser;
@@ -84,6 +117,8 @@ import java.time.LocalDateTime;
         this.takenByUser = takenByUser;
     }
     */
+
+
     public String getLocation() {
         return location;
     }
