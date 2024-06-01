@@ -41,29 +41,19 @@ public class User {
 
 
 
-    public Set<Todo> getTodosOffered() {
-        return todosOffered;
-    }
-
-    public void setTodosOffered(Set<Todo> todosOffered) {
-        this.todosOffered = todosOffered;
-    }
-
-    public Set<Todo> getTodosTaken() {
-        return todosTaken;
-    }
-
-    public void setTodosTaken(Set<Todo> todosTaken) {
-        this.todosTaken = todosTaken;
-    }
 
 
+    @Column(nullable = false, unique=true)
     private String username;
+
+    @Column(nullable = false)
+    private String password;
     private String firstName;
 
+    @Column(unique = true, nullable = false)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     private LocalDate dateOfBirth;
@@ -80,8 +70,13 @@ public class User {
     }
 
     //constructor
-    public User(long userId, String firstName, String lastName, String email, LocalDate dateOfBirth, String phone, LocalDateTime createdAt) {
+    public User(long userId, Address address, Set<Todo> todosOffered, Set<Todo> todosTaken, String username, String password, String firstName, String lastName, String email, LocalDate dateOfBirth, String phone, LocalDateTime createdAt) {
         this.userId = userId;
+        this.address = address;
+        this.todosOffered = todosOffered;
+        this.todosTaken = todosTaken;
+        this.username = username;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -90,8 +85,47 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    //getter and setter
 
+    //getter and setter
+    public Set<Todo> getTodosOffered() {
+        return todosOffered;
+    }
+
+    public void setTodosOffered(Set<Todo> todosOffered) {
+        this.todosOffered = todosOffered;
+    }
+
+    public Set<Todo> getTodosTaken() {
+        return todosTaken;
+    }
+
+    public void setTodosTaken(Set<Todo> todosTaken) {
+        this.todosTaken = todosTaken;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public long getUserId() {
         return userId;

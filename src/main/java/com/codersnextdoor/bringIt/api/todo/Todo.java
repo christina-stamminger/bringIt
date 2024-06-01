@@ -25,22 +25,6 @@ import java.time.LocalDateTime;
 
         private long todoId;
 
-
-
-
-        /*
-        @ManyToOne
-        @JoinColumn(name = "created_by_user_id", referencedColumnName = "user_id")
-        private User createdByUser;
-
-
-        @ManyToOne
-        @JoinColumn(name = "taken_by_user_id", referencedColumnName = "user_id")
-        private User takenByUser;
-*/
-
-
-
     @ManyToOne
     @JoinColumn(name = "useroffered_id", referencedColumnName = "user_id")
     private User userOffered;
@@ -99,24 +83,7 @@ import java.time.LocalDateTime;
     }
 
 
-    /*
-    // getter and setter
-    public User getCreatedByUser() {
-        return createdByUser;
-    }
-
-    public void setCreatedByUser(User createdByUser) {
-        this.createdByUser = createdByUser;
-    }
-    /*
-    public User getTakenByUser() {
-        return takenByUser;
-    }
-
-    public void setTakenByUser(User takenByUser) {
-        this.takenByUser = takenByUser;
-    }
-    */
+  //getter and setter
 
 
     public String getLocation() {

@@ -29,9 +29,6 @@ public class Address {
     @OneToMany(mappedBy = "address")
     private Set<User> users;
 
-    //@OneToMany(mappedBy="userOffered")
-    //private Set<Todo> todosOffered;
-
     private String streetNumber;
 
     private String postalCode;
