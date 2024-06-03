@@ -29,8 +29,7 @@ public class User {
     private long userId;
 
      @ManyToOne
-     // @JoinColumn(name = "address_id")
-     @JoinColumn(name = "addressId")
+     @JoinColumn(name = "address_id")
      private Address address;
 
 
