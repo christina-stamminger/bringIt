@@ -43,6 +43,12 @@ public class DataInitializer {
             return; // Exit if addresses exist
         }
 
+        // Check if todos already exist
+        List<Todo> todos = this.todoRepository.findAll();
+        if (!todos.isEmpty()) {
+            return; // Exit if todos exist
+        }
+
 
         // Create and save address
         Address address1 = new Address();

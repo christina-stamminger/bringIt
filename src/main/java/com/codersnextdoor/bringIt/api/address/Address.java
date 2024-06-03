@@ -23,7 +23,7 @@ public class Address {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
-    @Column(name = "address_id")
+    // @Column(name = "address_id")
     private long addressId;
 
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)

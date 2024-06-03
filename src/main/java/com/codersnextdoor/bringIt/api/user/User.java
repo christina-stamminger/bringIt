@@ -29,7 +29,8 @@ public class User {
     private long userId;
 
      @ManyToOne
-     @JoinColumn(name = "address_id")
+     // @JoinColumn(name = "address_id")
+     @JoinColumn(name = "addressId")
      private Address address;
 
 
@@ -38,8 +39,6 @@ public class User {
 
     @OneToMany(mappedBy="userTaken")
     private Set<Todo> todosTaken;
-
-
 
 
 
