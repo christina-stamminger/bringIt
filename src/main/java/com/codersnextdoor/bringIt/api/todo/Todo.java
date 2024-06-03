@@ -47,6 +47,7 @@ import java.time.LocalDateTime;
 
         private LocalDateTime createdAt;
 
+        @Column(nullable = false)
         private LocalDateTime expiresAt;
 
         private String status;
