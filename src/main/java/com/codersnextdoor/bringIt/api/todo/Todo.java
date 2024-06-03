@@ -33,23 +33,9 @@ import java.time.LocalDateTime;
     @JoinColumn(name = "usertaken_id", referencedColumnName = "user_id")
     private User userTaken;
 
-    public User getUserTaken() {
-        return userTaken;
-    }
 
-    public void setUserTaken(User userTaken) {
-        this.userTaken = userTaken;
-    }
 
-    public User getUserOffered() {
-        return userOffered;
-    }
-
-    public void setUserOffered(User userOffered) {
-        this.userOffered = userOffered;
-    }
-
-    private String location;
+        private String location;
 
         private String title;
 
@@ -65,13 +51,18 @@ import java.time.LocalDateTime;
 
         private String status;
 
+
         // empty constructor
         public Todo() {
 
         }
 
         // constructor
-    public Todo(String location, String title, String description, String addInfo, String uploadPath, LocalDateTime createdAt, LocalDateTime expiresAt, String status) {
+
+    public Todo(User userOffered, User userTaken, String location, String title, String description, String addInfo, String uploadPath, LocalDateTime createdAt, LocalDateTime expiresAt, String status) {
+
+        this.userOffered = userOffered;
+        this.userTaken = userTaken;
         this.location = location;
         this.title = title;
         this.description = description;
@@ -83,8 +74,7 @@ import java.time.LocalDateTime;
     }
 
 
-  //getter and setter
-
+    //getter and setter
 
     public String getLocation() {
         return location;
@@ -149,4 +139,24 @@ import java.time.LocalDateTime;
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public User getUserTaken() {
+        return userTaken;
+    }
+
+    public void setUserTaken(User userTaken) {
+        this.userTaken = userTaken;
+    }
+
+    public User getUserOffered() {
+        return userOffered;
+    }
+
+    public void setUserOffered(User userOffered) {
+        this.userOffered = userOffered;
+    }
+
+
+
+
 }

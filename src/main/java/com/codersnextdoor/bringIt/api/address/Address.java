@@ -26,7 +26,7 @@ public class Address {
     @Column(name = "address_id")
     private long addressId;
 
-    @OneToMany(mappedBy = "address")
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
     private Set<User> users;
 
     private String streetNumber;
@@ -39,5 +39,69 @@ public class Address {
     @Column(name="created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    // empty constructor
+    public Address() {
+
+    }
+
+    // constructor
+    public Address(Set<User> users, String streetNumber, String postalCode, String city, LocalDateTime createdAt) {
+
+        this.users = users;
+        this.streetNumber = streetNumber;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.createdAt = createdAt;
+    }
+
+    // getter and setter
+
+    public long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
 

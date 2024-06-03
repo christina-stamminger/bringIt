@@ -25,7 +25,7 @@ public class User {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private long userId;
 
      @ManyToOne
@@ -47,7 +47,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-    private String password;
+    private String passwordHash;
     private String firstName;
 
     @Column(unique = true, nullable = false)
@@ -70,13 +70,13 @@ public class User {
     }
 
     //constructor
-    public User(long userId, Address address, Set<Todo> todosOffered, Set<Todo> todosTaken, String username, String password, String firstName, String lastName, String email, LocalDate dateOfBirth, String phone, LocalDateTime createdAt) {
-        this.userId = userId;
+    public User(Address address, Set<Todo> todosOffered, Set<Todo> todosTaken, String username, String passwordHash, String firstName, String lastName, String email, LocalDate dateOfBirth, String phone, LocalDateTime createdAt) {
+
         this.address = address;
         this.todosOffered = todosOffered;
         this.todosTaken = todosTaken;
         this.username = username;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -119,12 +119,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public long getUserId() {
