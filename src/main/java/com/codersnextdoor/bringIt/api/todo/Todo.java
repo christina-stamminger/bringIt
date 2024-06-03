@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
                         @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
                 }
         )
+
         private long todoId;
 
     @ManyToOne
@@ -46,8 +47,7 @@ import java.time.LocalDateTime;
 
         private LocalDateTime createdAt;
 
-
-        // @Column(nullable = false)
+        @Column(nullable = false)
         private LocalDateTime expiresAt;
 
         private String status;
