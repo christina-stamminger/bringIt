@@ -2,6 +2,7 @@ package com.codersnextdoor.bringIt.api.user;
 
 import com.codersnextdoor.bringIt.api.address.Address;
 import com.codersnextdoor.bringIt.api.todo.Todo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -32,14 +33,13 @@ public class User {
      @JoinColumn(name = "address_id")
      private Address address;
 
-
     @OneToMany(mappedBy="userOffered")
+    @JsonIgnore
     private Set<Todo> todosOffered;
 
     @OneToMany(mappedBy="userTaken")
+    @JsonIgnore
     private Set<Todo> todosTaken;
-
-
 
     @Column(nullable = false, unique=true)
     private String username;
@@ -68,11 +68,9 @@ public class User {
     }
 
     //constructor
-    public User(Address address, Set<Todo> todosOffered, Set<Todo> todosTaken, String username, String passwordHash, String firstName, String lastName, String email, LocalDate dateOfBirth, String phone, LocalDateTime createdAt) {
+    public User(Address address, String username, String passwordHash, String firstName, String lastName, String email, LocalDate dateOfBirth, String phone, LocalDateTime createdAt) {
 
         this.address = address;
-        this.todosOffered = todosOffered;
-        this.todosTaken = todosTaken;
         this.username = username;
         this.passwordHash = passwordHash;
         this.firstName = firstName;
@@ -81,6 +79,9 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.phone = phone;
         this.createdAt = createdAt;
+    }
+
+    public User(Address address, String firstName, String lastName, String username, String passwordHash, LocalDate dateOfBirth, String email, String phone) {
     }
 
 

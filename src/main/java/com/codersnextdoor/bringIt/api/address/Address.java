@@ -2,6 +2,7 @@ package com.codersnextdoor.bringIt.api.address;
 
 import com.codersnextdoor.bringIt.api.todo.Todo;
 import com.codersnextdoor.bringIt.api.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -23,10 +24,11 @@ public class Address {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
-    @Column(name = "adress_id")
+    @Column(name = "address_id")
     private long addressId;
 
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<User> users;
 
     private String streetNumber;

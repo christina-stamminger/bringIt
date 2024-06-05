@@ -1,6 +1,7 @@
 package com.codersnextdoor.bringIt.api.todo;
 
 import com.codersnextdoor.bringIt.api.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -27,10 +28,12 @@ import java.time.LocalDateTime;
 
     @ManyToOne
     @JoinColumn(name = "useroffered_id", referencedColumnName = "user_id")
+    @JsonIgnore
     private User userOffered;
 
     @ManyToOne
     @JoinColumn(name = "usertaken_id", referencedColumnName = "user_id")
+    @JsonIgnore
     private User userTaken;
 
 
