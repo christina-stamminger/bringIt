@@ -44,14 +44,17 @@ public class CreateUserController {
             body.addErrorMessage("User ist bereits in Verwendung");
             return new ResponseEntity<>(body, HttpStatus.CONFLICT);
         }
+
+
         // Check if address exists
         Optional<Address> optionalAddress = addressRepository.findById(createUserDTO.getAddressId());
-        if(!optionalAddress.isPresent()) {
+        if(optionalAddress.isEmpty()) {
             body.addErrorMessage("Address not found");
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         // Retrieves the Address object from AddressRepository contained within the Optional<Address> if it is present.
        Address address = optionalAddress.get();
+
 
         // Create a new user object
         // Address object for associating user with address

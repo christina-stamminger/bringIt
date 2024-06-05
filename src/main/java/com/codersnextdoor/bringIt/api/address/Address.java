@@ -56,6 +56,15 @@ public class Address {
         this.createdAt = createdAt;
     }
 
+    // constructor
+
+    public Address(String streetNumber, String postalCode, String city) {
+        this.streetNumber = streetNumber;
+        this.postalCode = postalCode;
+        this.city = city;
+    }
+
+
     // getter and setter
 
     public long getAddressId() {

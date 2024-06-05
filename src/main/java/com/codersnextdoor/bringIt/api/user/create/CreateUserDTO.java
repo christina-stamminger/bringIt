@@ -8,7 +8,6 @@ public class CreateUserDTO {
 
     private long addressId;
 
-
     private String firstName;
 
     private String lastName;
@@ -24,7 +23,6 @@ public class CreateUserDTO {
     private String phone;
 
     // getter and setter
-
 
     public long getAddressId() {
         return addressId;
