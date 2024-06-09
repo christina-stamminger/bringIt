@@ -118,6 +118,8 @@ public class DataInitializer {
 
         userRepository.save(user3);
 
+
+
         // Create and save todo
         Todo todo1 = new Todo();
         todo1.setCreatedAt(LocalDateTime.now());
@@ -127,7 +129,7 @@ public class DataInitializer {
         todo1.setStatus("In Arbeit");
         todo1.setLocation("Billa, Hofer, Spar");
         todo1.setUserOffered(user1);
-        todo1.setExpiresAt(LocalDateTime.of(2024,6,5, 10,0));
+        todo1.setExpiresAt(LocalDateTime.of(2024,6,22, 10,0));
         todo1.setUserTaken(user3);
 
         todoRepository.save(todo1);
@@ -140,7 +142,7 @@ public class DataInitializer {
         todo2.setStatus("Offen");
         todo2.setLocation("Apotheke");
         todo2.setUserOffered(user3);
-        todo2.setExpiresAt(LocalDateTime.of(2024,6,5, 10,0));
+        todo2.setExpiresAt(LocalDateTime.of(2024,6,14, 10,0));
 
         todoRepository.save(todo2);
 
@@ -152,7 +154,7 @@ public class DataInitializer {
         todo3.setStatus("Offen");
         todo3.setLocation("DM, Bipa, Müller");
         todo3.setUserOffered(user2);
-        todo3.setExpiresAt(LocalDateTime.of(2024,6,5, 10,0));
+        todo3.setExpiresAt(LocalDateTime.of(2024,6,16, 10,0));
 
         todoRepository.save(todo3);
 
@@ -164,7 +166,7 @@ public class DataInitializer {
         todo4.setStatus("Offen");
         todo4.setLocation("Billa, Hofer, Lidl,Spar");
         todo4.setUserOffered(user2);
-        todo4.setExpiresAt(LocalDateTime.of(2024,6,5, 10,0));
+        todo4.setExpiresAt(LocalDateTime.of(2024,6,20, 10,0));
 
         todoRepository.save(todo4);
 
@@ -177,8 +179,37 @@ public class DataInitializer {
         todo5.setLocation("OBI");
         todo5.setUserOffered(user2);
         todo5.setUserTaken(user1);
-        todo5.setExpiresAt(LocalDateTime.of(2024,6,5, 10,0));
+        todo5.setExpiresAt(LocalDateTime.of(2024,6,15, 10,0));
 
         todoRepository.save(todo5);
+
+        Todo todo6 = new Todo (
+                user1,
+                user3,
+                "Markt",
+                "Lebensmittel",
+                "12 Eier vom Markt mitnehmen",
+                "Markt oder Bauer oder Supermarkt",
+                null,
+                LocalDateTime.now(),
+                LocalDateTime.of(2024,6,1,10,0),
+                "In Arbeit"
+        );
+        todoRepository.save(todo6);
+
+        Todo todo7 = new Todo (
+                user3,
+                null,
+                "Bauer",
+                "Lebensmittel",
+                "Äpfel",
+                "Bitte nicht vom Supermarkt",
+                null,
+                LocalDateTime.now(),
+                LocalDateTime.of(2024,6,8,16,0),
+                "Offen"
+        );
+        todoRepository.save(todo7);
+
     }
 }

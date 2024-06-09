@@ -28,12 +28,10 @@ import java.time.LocalDateTime;
 
     @ManyToOne
     @JoinColumn(name = "useroffered_id", referencedColumnName = "user_id")
-    @JsonIgnore
     private User userOffered;
 
     @ManyToOne
     @JoinColumn(name = "usertaken_id", referencedColumnName = "user_id")
-    @JsonIgnore
     private User userTaken;
 
 
@@ -79,6 +77,15 @@ import java.time.LocalDateTime;
 
 
     //getter and setter
+
+
+    public long getTodoId() {
+        return todoId;
+    }
+
+    public void setTodoId(long todoId) {
+        this.todoId = todoId;
+    }
 
     public String getLocation() {
         return location;
