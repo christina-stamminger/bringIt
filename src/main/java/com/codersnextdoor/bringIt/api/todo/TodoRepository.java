@@ -1,10 +1,13 @@
 package com.codersnextdoor.bringIt.api.todo;
 
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
@@ -14,4 +17,27 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 
     @Query("SELECT t FROM Todo t WHERE t.userTaken.userId = :searchUserTaken")
     Set<Todo> findTodoByTakenUserId(@Param("searchUserTaken") long searchUserTaken);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Todo t WHERE t.expiresAt < CURRENT_TIMESTAMP")
+    void deleteTodosExpired();
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Todo t WHERE t.expiresAt < :dateTime")
+    void deleteTodosExpiredBefore(@Param("dateTime") LocalDateTime dateTime);
+
+    @Query("SELECT t FROM Todo t WHERE t.expiresAt > CURRENT_TIMESTAMP")
+    Set<Todo> findTodosNotExpired();
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Todo t SET t.status = 'Abgelaufen' WHERE t.expiresAt < CURRENT_TIMESTAMP ")
+    void setTodosExpiredStatus();
+
+    // findTodoByPostalCode
+
+    // findTodoByCity
+
 }
