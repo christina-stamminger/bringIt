@@ -87,7 +87,7 @@ public class DataInitializer {
         user1.setLastName("Schmidt");
         user1.setDateOfBirth(LocalDate.of(1990, 5,10));
         user1.setUsername("Sarah1111");
-        user1.setPasswordHash("xxx");
+        user1.setPassword("xxx");
         user1.setEmail("sarah@gmail.com");
         user1.setPhone("+43676444818027");
         user1.setAddress(address1);
@@ -99,7 +99,7 @@ public class DataInitializer {
         user2.setLastName("Müller");
         user2.setDateOfBirth(LocalDate.of(1980, 5,13));
         user2.setUsername("Markus12345");
-        user2.setPasswordHash("yyy");
+        user2.setPassword("yyy");
         user2.setEmail("markus@gmail.com");
         user2.setPhone("+436508280857");
         user2.setAddress(address1);
@@ -111,7 +111,7 @@ public class DataInitializer {
         user3.setLastName("Strudel");
         user3.setDateOfBirth(LocalDate.of(1974, 9,24));
         user3.setUsername("Susi04");
-        user3.setPasswordHash("ppp");
+        user3.setPassword("ppp");
         user3.setEmail("susi@gmail.com");
         user3.setPhone("+436643475661");
         user3.setAddress(address2);

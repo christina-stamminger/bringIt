@@ -1,20 +1,24 @@
 package com.codersnextdoor.bringIt.api.user.create;
 
 import com.codersnextdoor.bringIt.api.address.Address;
+import com.codersnextdoor.bringIt.api.address.create.CreateAddressDTO;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class CreateUserDTO {
 
-    private long addressId;
+    //private long addressId;
+
+    private CreateAddressDTO address;
+
+    private String username;
+
+    private String password;
 
     private String firstName;
 
     private String lastName;
-
-    private String username;
-
-    private String passwordHash;
 
     private LocalDate dateOfBirth;
 
@@ -22,16 +26,27 @@ public class CreateUserDTO {
 
     private String phone;
 
+    private LocalDateTime createdAt;
+
     // getter and setter
 
-    public long getAddressId() {
-        return addressId;
+    public CreateAddressDTO getAddress() {
+        return address;
     }
 
-    public void setAddressId(long addressId) {
-        this.addressId = addressId;
+    public void setAddress(CreateAddressDTO address) {
+        this.address = address;
     }
 
+    /*
+            public long getAddressId() {
+                return addressId;
+            }
+
+            public void setAddressId(long addressId) {
+                this.addressId = addressId;
+            }
+        */
     public String getFirstName() {
         return firstName;
     }
@@ -56,12 +71,12 @@ public class CreateUserDTO {
         this.username = username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public LocalDate getDateOfBirth() {
@@ -86,5 +101,13 @@ public class CreateUserDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

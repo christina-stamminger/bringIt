@@ -25,7 +25,7 @@ public class GetUserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/api/users/{username}")
+    @GetMapping("/api/users/username/{username}")
     public ResponseEntity<UserResponseBody> getByUsername(
             @PathVariable
             String username) {
@@ -41,7 +41,7 @@ public class GetUserController {
         return ResponseEntity.ok(new UserResponseBody(user));
     }
 
-    @GetMapping("/api/users/{id}")
+    @GetMapping("/api/users/id/{id}")
     public ResponseEntity<UserResponseBody> getById(
             @PathVariable
             long id) {
