@@ -25,7 +25,6 @@ public class CreateTodoController {
 
     @Autowired
     private TodoRepository todoRepository;
-
     @Autowired
     private UserRepository userRepository;
 
@@ -101,7 +100,7 @@ public class CreateTodoController {
 
         // CHECK IF EXPIRED_AT IS VALID:
         if (createTodoDTO.getExpiresAt().isBefore(LocalDateTime.now())) {
-            todoResponseBody.addErrorMessage("ExpiredAt is before current DateTime! Please choose another DateTime for expiredAt.");
+            todoResponseBody.addErrorMessage("ExpiredAt is before current DateTime! The instant of time must be in future.");
             return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
         }
 

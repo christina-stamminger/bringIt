@@ -8,6 +8,13 @@ import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
 
 
+// CHECK IF EMAIL IS IN EMAIL-FORMAT:
+//
+// public static final String regexPatternEmail = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+//
+//   if (!email.matches(regexPatternEmail)) { ... excepteion ... }
+//
+
 @Entity
     @Table(name= "TB_TODO")
     public class Todo {
