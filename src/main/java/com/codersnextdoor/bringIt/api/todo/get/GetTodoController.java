@@ -31,8 +31,8 @@ public class GetTodoController {
      * Rest Path for GET-Request: "localhost:8081/api/todo/"
      * - Method finds all Todos in the database that are not yet expired (expiredAt > current_timestamp).
      * - Todos that are expired are updated and the status is changed to "Abgelaufen".
-     * - Todos that are expired a certain number of days ago (REMAINING_DAYS_IN_DB) are deleted from the database.
-     * The static variable REMAINING_DAYS_IN_DB can be changed in the GetTodoService-class.
+     * - Todos that are expired a certain number of days ago (KEEPING_DAYS_IN_DB) are deleted from the database.
+     * The static variable KEEPING_DAYS_IN_DB can be changed in the GetTodoService-class.
      *
      * @return - ResponseEntity with StatusCode 200 (OK). Response includes Set<Todo>
      */

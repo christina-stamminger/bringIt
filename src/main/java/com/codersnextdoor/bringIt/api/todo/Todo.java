@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 
         private String location;
 
+        @Column(nullable = false)
         private String title;
 
         private String description;
