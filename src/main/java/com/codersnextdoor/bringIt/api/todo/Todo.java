@@ -9,36 +9,36 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name= "TB_TODO")
-public class Todo {
+    @Table(name= "TB_TODO")
+    public class Todo {
 
-    @Id
-    @GeneratedValue(generator = "todo-sequence-generator")
-    @GenericGenerator(
-         name = "todo-sequence-generator",
-         strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-         parameters = {
-                 @org.hibernate.annotations.Parameter(name = "sequence_name", value = "todo_sequence"),
-                 @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-                 @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
-         }
-    )
-    private long todoId;
+        @Id
+        @GeneratedValue(generator = "todo-sequence-generator")
+        @GenericGenerator(
+                name = "todo-sequence-generator",
+                strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+                parameters = {
+                        @org.hibernate.annotations.Parameter(name = "sequence_name", value = "todo_sequence"),
+                        @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                        @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+                }
+        )
+
+        private long todoId;
 
     @ManyToOne
     @JoinColumn(name = "useroffered_id", referencedColumnName = "user_id")
-   // @JsonIgnore
     private User userOffered;
 
     @ManyToOne
     @JoinColumn(name = "usertaken_id", referencedColumnName = "user_id")
-    // @JsonIgnore
     private User userTaken;
 
 
 
         private String location;
 
+        @Column(nullable = false)
         private String title;
 
         private String description;
@@ -78,6 +78,7 @@ public class Todo {
 
 
     //getter and setter
+
 
     public long getTodoId() {
         return todoId;

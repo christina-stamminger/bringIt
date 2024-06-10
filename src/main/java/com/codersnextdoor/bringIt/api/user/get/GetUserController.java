@@ -25,12 +25,28 @@ public class GetUserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/api/byUsername/{username}")
+    @GetMapping("/api/users/username/{username}")
     public ResponseEntity<UserResponseBody> getByUsername(
             @PathVariable
             String username) {
 
         Optional<User> optionalUser = this.userRepository.findByUsername(username);
+
+        if(!optionalUser.isPresent()) {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+
+        User user = optionalUser.get();
+
+        return ResponseEntity.ok(new UserResponseBody(user));
+    }
+
+    @GetMapping("/api/users/id/{id}")
+    public ResponseEntity<UserResponseBody> getById(
+            @PathVariable
+            long id) {
+
+        Optional<User> optionalUser = this.userRepository.findById(id);
 
         if(!optionalUser.isPresent()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);

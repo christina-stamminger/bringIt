@@ -45,16 +45,18 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-    private String passwordHash;
+    private String password;
+
     private String firstName;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String lastName;
 
-    @Column(unique = true, nullable = false)
+    private LocalDate dateOfBirth;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
-    private LocalDate dateOfBirth;
 
     private String phone;
 
@@ -66,23 +68,25 @@ public class User {
     public User() {
 
     }
-
+/*
+    public User(Address address, String firstName, String lastName, String username, String passwordHash, LocalDate dateOfBirth, String email, String phone) {
+    }
+*/
     //constructor
-    public User(Address address, String username, String passwordHash, String firstName, String lastName, String email, LocalDate dateOfBirth, String phone, LocalDateTime createdAt) {
+    public User(Address address, String username, String password, String firstName, String lastName, LocalDate dateOfBirth,String email, String phone, LocalDateTime createdAt) {
 
         this.address = address;
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.dateOfBirth = dateOfBirth;
+        this.email = email;
         this.phone = phone;
         this.createdAt = createdAt;
     }
 
-    public User(Address address, String firstName, String lastName, String username, String passwordHash, LocalDate dateOfBirth, String email, String phone) {
-    }
+
 
 
     //getter and setter
@@ -118,12 +122,14 @@ public class User {
         this.username = username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public long getUserId() {

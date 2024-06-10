@@ -2,6 +2,7 @@ package com.codersnextdoor.bringIt.api.user.create;
 
 import com.codersnextdoor.bringIt.api.address.Address;
 import com.codersnextdoor.bringIt.api.address.AddressRepository;
+import com.codersnextdoor.bringIt.api.address.create.CreateAddressDTO;
 import com.codersnextdoor.bringIt.api.user.User;
 import com.codersnextdoor.bringIt.api.user.UserRepository;
 import com.codersnextdoor.bringIt.api.user.UserResponseBody;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/user/")
 public class CreateUserController {
-    //Autowire for interacting with the database
+
     @Autowired
     private UserRepository userRepository;
 
@@ -27,52 +28,62 @@ public class CreateUserController {
     private AddressRepository addressRepository;
 
     @PostMapping
-    public ResponseEntity<UserResponseBody> create(
-            @RequestBody
-            CreateUserDTO createUserDTO) {
+    public ResponseEntity<UserResponseBody> create(@RequestBody CreateUserDTO createUserDTO) {
 
         UserResponseBody body = new UserResponseBody();
-
 
         if (createUserDTO == null || StringUtils.isEmpty(createUserDTO.getUsername())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        // Check if user exists
-        Optional<User> optionalUser = this.userRepository.findByUsername(createUserDTO.getUsername());
 
-        if(optionalUser.isPresent()) {
-            body.addErrorMessage("User ist bereits in Verwendung");
+        // Check if user exists
+        Optional<User> optionalUser = userRepository.findByUsername(createUserDTO.getUsername());
+        if (optionalUser.isPresent()) {
+            body.addErrorMessage("User already exists.");
             return new ResponseEntity<>(body, HttpStatus.CONFLICT);
         }
+
+        // Extract address from DTO
+        CreateAddressDTO addressDTO = createUserDTO.getAddress();
+
         // Check if address exists
-        Optional<Address> optionalAddress = addressRepository.findById(createUserDTO.getAddressId());
-        if(!optionalAddress.isPresent()) {
-            body.addErrorMessage("Address not found");
-            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        Optional<Address> optionalAddress = addressRepository.findByStreetNumberAndPostalCodeAndCity(
+                addressDTO.getStreetNumber(),
+                addressDTO.getPostalCode(),
+                addressDTO.getCity()
+        );
+
+        Address address;
+        if (optionalAddress.isPresent()) {
+            address = optionalAddress.get();
+        } else {
+            address = new Address(
+                    addressDTO.getStreetNumber(),
+                    addressDTO.getPostalCode(),
+                    addressDTO.getCity()
+            );
+            addressRepository.save(address);
         }
-        // Retrieves the Address object from AddressRepository contained within the Optional<Address> if it is present.
-       Address address = optionalAddress.get();
 
         // Create a new user object
-        // Address object for associating user with address
         User user = new User(
                 address,
+                createUserDTO.getUsername(),
+                createUserDTO.getPassword(),
                 createUserDTO.getFirstName(),
                 createUserDTO.getLastName(),
-                createUserDTO.getUsername(),
-                createUserDTO.getPasswordHash(),
                 createUserDTO.getDateOfBirth(),
                 createUserDTO.getEmail(),
-                createUserDTO.getPhone()
+                createUserDTO.getPhone(),
+                createUserDTO.getCreatedAt()
         );
 
         // Save the new user to the repository
         try {
-            this.userRepository.save(user);
-        } catch(Throwable t) {
-            body.addErrorMessage("Es ist ein Fehler aufgetreten");
+            userRepository.save(user);
+        } catch (Throwable t) {
+            body.addErrorMessage("An error occurred");
             body.addErrorMessage(t.getMessage());
-
             return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
