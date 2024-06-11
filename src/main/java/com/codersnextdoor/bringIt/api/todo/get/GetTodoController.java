@@ -52,7 +52,7 @@ public class GetTodoController {
     /**
      * GET TODO BY ID:
      * Rest Path for GET-Request: "localhost:8081/api/todo/{id}"
-     * Method finds Todo with a specific id in the database and checks if this Todo actually exists.
+     * Method finds Todo with a specific id in the database.
      *
      * @param id (long) of the Todo
      * @return - ResponseBody incl. the wanted Todo, a pos. response message and StatusCode 302 (FOUND).

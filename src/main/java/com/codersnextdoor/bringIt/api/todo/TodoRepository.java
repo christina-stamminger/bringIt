@@ -14,7 +14,23 @@ import java.util.Set;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
-    Optional<Todo> findByUserOfferedAndLocationAndTitleAndDescriptionAndAddInfoAndExpiresAt (User userOffered, String location, String title, String description, String addInfo, LocalDateTime expiresAt);
+    Optional<Todo> findByUserOfferedAndLocationAndTitleAndDescriptionAndAddInfoAndExpiresAt (
+            User userOffered,
+            String location,
+            String title,
+            String description,
+            String addInfo,
+            LocalDateTime expiresAt
+    );
+
+    Optional<Todo> findByTodoIdAndLocationAndTitleAndDescriptionAndAddInfoAndExpiresAt (
+            Long TodoId,
+            String location,
+            String title,
+            String description,
+            String addInfo,
+            LocalDateTime expiresAt
+    );
 
     @Query("SELECT t FROM Todo t WHERE t.userOffered.userId = :searchUserOffered")
     Set<Todo> findTodoByOfferedUserId(@Param("searchUserOffered") long searchUserOffered);

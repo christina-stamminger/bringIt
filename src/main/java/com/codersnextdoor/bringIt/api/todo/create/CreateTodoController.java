@@ -36,7 +36,7 @@ public class CreateTodoController {
      *
      * @param createTodoDTO - The RequestBody should be a JSON object with the parameters:
      *                      userOfferedId (long) - id-Nr of User creating the todo,
-     *                      title (String, NOT NULL) - Todo-Title
+     *                      title (String, NOT NULL) - Todo-Title,
      *                      location (String) - The location of the todo (i.e. pickup-place, store, etc.),
      *                      description (String) - Todo-description,
      *                      addInfo (String) - Additional Info for Todo,
