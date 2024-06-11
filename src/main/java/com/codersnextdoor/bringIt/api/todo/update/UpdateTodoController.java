@@ -79,7 +79,7 @@ public class UpdateTodoController {
 
         // UPDATE VALUES THAT ARE PROVIDED BY UpdateTodoDTO:
         if (!StringUtils.isEmpty(updateTodoDTO.getTitle())) {
-            updateTodo.setTitle(updateTodo.getTitle());
+            updateTodo.setTitle(updateTodoDTO.getTitle());
         }
         if (!StringUtils.isEmpty(updateTodoDTO.getLocation())) {
             updateTodo.setLocation(updateTodoDTO.getLocation());
@@ -97,32 +97,30 @@ public class UpdateTodoController {
             updateTodo.setExpiresAt(updateTodoDTO.getExpiresAt());
         }
 
-        this.todoRepository.save(updateTodo);
+
+        // SAVE THE UPDATED TODO:
+        Todo savedTodo = todoRepository.save(updateTodo);
 
 
-        // CHECK IF TODO WAS SAVED IN DATABASE:
-        optionalTodo = todoRepository.findByTodoIdAndLocationAndTitleAndDescriptionAndAddInfoAndExpiresAt(
-                updateTodoDTO.getTodoId(),
-                updateTodoDTO.getLocation(),
-                updateTodoDTO.getTitle(),
-                updateTodoDTO.getDescription(),
-                updateTodoDTO.getAddInfo(),
-                updateTodoDTO.getExpiresAt()
-        );
-        if (!optionalTodo.isPresent()) {
-            todoResponseBody.addErrorMessage("Update of Todo with id " + updateTodoDTO.getTodoId() + " was not successfull!");
+        // VERIFY IF TODO WAS SAVED CORRECTLY:
+        Optional<Todo> optionalSavedTodo = todoRepository.findById(updateTodoDTO.getTodoId());
+        if (optionalSavedTodo.isPresent()) {
+            Todo todoInDb = optionalSavedTodo.get();
+            if (!todoInDb.equals(savedTodo)) {
+                todoResponseBody.addErrorMessage("Update of Todo with id " + updateTodoDTO.getTodoId() + " was not successful!");
+                return new ResponseEntity<>(todoResponseBody, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            todoResponseBody.addErrorMessage("Updated Todo with id " + updateTodoDTO.getTodoId() + " was not found after saving!");
             return new ResponseEntity<>(todoResponseBody, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
 
         // RETURN UPDATED TODO:
-        todoResponseBody.setTodo(updateTodo);
+        todoResponseBody.setTodo(savedTodo);
         todoResponseBody.addMessage("Todo with id " + updateTodoDTO.getTodoId() + " was successfully updated!");
         return new ResponseEntity<>(todoResponseBody, HttpStatus.OK);
     }
-
-
-
 
 
 
