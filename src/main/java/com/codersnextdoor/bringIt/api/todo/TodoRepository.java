@@ -48,18 +48,22 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query("DELETE FROM Todo t WHERE t.expiresAt < :dateTime")
     void deleteTodosExpiredBefore(@Param("dateTime") LocalDateTime dateTime);
 
-    @Query("SELECT t FROM Todo t WHERE t.expiresAt > CURRENT_TIMESTAMP")
-    Set<Todo> findTodosNotExpired();
+    @Query("SELECT t FROM Todo t WHERE t.expiresAt > CURRENT_TIMESTAMP " +
+            "AND t.status = 'Offen'")
+    Set<Todo> findTodosNotExpiredAndOpen();
 
     @Modifying
     @Transactional
     @Query("UPDATE Todo t SET t.status = 'Abgelaufen' WHERE t.expiresAt < CURRENT_TIMESTAMP")
     void setTodosExpiredStatus();
 
-    @Query("SELECT t FROM Todo t WHERE t.userOffered.address.postalCode = :searchPostalCode AND t.expiresAt > CURRENT_TIMESTAMP")
+    @Query("SELECT t FROM Todo t WHERE t.userOffered.address.postalCode = :searchPostalCode " +
+            "AND t.expiresAt > CURRENT_TIMESTAMP AND t.status = 'Offen'")
     Set<Todo> findTodoByPostalCode(@Param("searchPostalCode") String searchPostalCode);
 
-    @Query("SELECT t FROM Todo t WHERE t.userOffered.address.city = :searchCity AND t.expiresAt > CURRENT_TIMESTAMP")
+    @Query("SELECT t FROM Todo t WHERE t.userOffered.address.city = :searchCity " +
+            "AND t.expiresAt > CURRENT_TIMESTAMP AND t.status = 'Offen'")
     Set<Todo> findTodoByCity(@Param("searchCity") String searchCity);
 
 }
+

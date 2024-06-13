@@ -3,30 +3,31 @@ package com.codersnextdoor.bringIt.api.todo.update;
 import com.codersnextdoor.bringIt.api.todo.Todo;
 import com.codersnextdoor.bringIt.api.todo.TodoRepository;
 import com.codersnextdoor.bringIt.api.todo.TodoResponseBody;
+import com.codersnextdoor.bringIt.api.user.User;
+import com.codersnextdoor.bringIt.api.user.UserRepository;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/todo/")
+@RequestMapping("/api/todo")
 public class UpdateTodoController {
 
     @Autowired
     private TodoRepository todoRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
     /**
      * UPDATE TODO
-     * Rest Path for PUT-Request: "localhost:8081/api/todo/"
+     * Rest Path for PUT-Request: "localhost:8081/api/todo"
      * Method finds an existing todo by id and updates it with the provided values from the Requestbody.
      *
      * @param updateTodoDTO - The RequestBody should be a JSON object with at least one of these parameters:
@@ -37,7 +38,7 @@ public class UpdateTodoController {
      *                      addInfo (String) - Additional Info for Todo,
      *                      expiresAt (LocalDateTime) - Expiry Date and Time of the Todo in the form: yyyy-mm-ddThh:mm
      *
-     * @return  - ResponseBody incl. the newly created and saved todo, a message or errorMessage and StatusCode
+     * @return  - ResponseBody incl. the updated and saved todo, a message or errorMessage and StatusCode
      *          - Everything correct: todo, success-message, StatusCode 200 (OK)
      * possible Exceptions and StatusCodes:
      * - Requestbody is empty: errorMessage, StatusCode 400 (BAD_REQUEST)
@@ -45,7 +46,7 @@ public class UpdateTodoController {
      * - expiredAt is before current DateTime: errorMessage, StatusCode 400 (BAD_REQUEST)
      * - Updated of Todo was not successfull: errorMessage, StatusCode 500 (INTERNAL_SERVER_ERROR)
      */
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<TodoResponseBody> updateTodo(
             @RequestBody
             UpdateTodoDTO updateTodoDTO) {
@@ -66,7 +67,6 @@ public class UpdateTodoController {
             todoResponseBody.addErrorMessage("Todo with id " + updateTodoDTO.getTodoId() + " doesn't exist.");
             return new ResponseEntity<>(todoResponseBody, HttpStatus.NOT_FOUND);
         }
-
         Todo updateTodo = optionalTodo.get();
 
 
@@ -123,5 +123,100 @@ public class UpdateTodoController {
     }
 
 
+    /**
+     * UPDATE TODO-STATUS:
+     * Rest Path for PUT-Request: "localhost:8081/api/todo/status"
+     * Method finds existing todo by id and updates its status and userTaken with the provided values from the Requestbody.
+     *
+     * @param updateTodoStatusDTO - The RequestBody should be a JSON object with these parameters:
+     *                            - todoId (long) - id-Nr of Todo to be updated,
+     *                            - userTakenId (long) - id-Nr of wants to/already accept(ed) the Todo
+     *                            - status (String) - Only one of the following options possible:
+     *                              "Offen", "In Arbeit", "Erledigt"
+     *
+     * @return - ResponseBody incl. the updated and saved todo, a message or errorMessage and StatusCode
+     *         - Everything correct: todo, success-message, StatusCode 200 (OK)
+     *         - Exceptions: ErrorMessage and HttpStatus 400, 404 or 409
+     */
+    @PatchMapping("/status")
+    public ResponseEntity<TodoResponseBody> updateTodoStatus(
+            @RequestBody
+            UpdateTodoStatusDTO updateTodoStatusDTO) {
+
+        TodoResponseBody todoResponseBody = new TodoResponseBody();
+
+
+        // CHECK IF REQUEST_BODY IS EMPTY:
+        if (updateTodoStatusDTO == null) {
+            todoResponseBody.addErrorMessage("Requestbody is empty.");
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
+        }
+
+
+        // CHECK IF TODO EXISTS:
+        Optional<Todo> optionalTodo = todoRepository.findById(updateTodoStatusDTO.getTodoId());
+        if (optionalTodo.isEmpty()) {
+            todoResponseBody.addErrorMessage("Todo with id " + updateTodoStatusDTO.getTodoId() + " doesn't exist.");
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.NOT_FOUND);
+        }
+        Todo updateTodo = optionalTodo.get();
+
+
+        // VALIDATE USER_TAKEN:
+        if (ObjectUtils.isEmpty(updateTodoStatusDTO.getUserTakenId()))  {
+            todoResponseBody.addErrorMessage("userTakenId is missing in RequestBody.");
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
+        }
+        if (!ObjectUtils.isEmpty(updateTodoStatusDTO.getUserTakenId()) &&
+                updateTodoStatusDTO.getUserTakenId() == updateTodo.getUserOffered().getUserId()) {
+            todoResponseBody.addErrorMessage("UserTaken has to be different to UserOffered.");
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.CONFLICT);
+        }
+        Optional<User> optionalUser = userRepository.findByUserId(updateTodoStatusDTO.getUserTakenId());
+        if (optionalUser.isEmpty()) {
+            todoResponseBody.addErrorMessage("User with id " + updateTodoStatusDTO.getUserTakenId() + " doesn't exist.");
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.NOT_FOUND);
+        }
+        User userTaken = optionalUser.get();
+
+
+        // VALIDATE STATUS:
+        if (StringUtils.isEmpty(updateTodoStatusDTO.getStatus())) {
+            todoResponseBody.addErrorMessage("Status is missing in RequestBody");
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
+        }
+        if (!updateTodoStatusDTO.getStatus().equals("In Arbeit")
+                && !updateTodoStatusDTO.getStatus().equals("Offen")
+                && !updateTodoStatusDTO.getStatus().equals("Erledigt")) {
+            todoResponseBody.addErrorMessage("Status can only be 'In Arbeit' or 'Offen' or 'Erledigt'.");
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
+        }
+        if (updateTodo.getUserTaken() == null && !updateTodoStatusDTO.getStatus().equals("In Arbeit")) {
+            todoResponseBody.addErrorMessage("A Todo with status 'Offen' can only be set to 'In Arbeit'.");
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
+        }
+        if ((updateTodoStatusDTO.getStatus().equals("Erledigt")
+                && updateTodoStatusDTO.getStatus().equals("Offen"))
+                && !updateTodo.getStatus().equals("In Arbeit")) {
+            todoResponseBody.addErrorMessage("Status can only be set to 'Erledigt' or 'Offen' if it is 'In Arbeit'.");
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
+        }
+
+
+        // CHANGE STATUS AND USER_TAKEN / SAVE:
+        if (updateTodoStatusDTO.getStatus().equals("Offen")) {
+            userTaken = null;
+        }
+        updateTodo.setStatus(updateTodoStatusDTO.getStatus());
+        updateTodo.setUserTaken(userTaken);
+
+        Todo savedTodo = todoRepository.save(updateTodo);
+
+
+        // RETURN UPDATED TODO:
+        todoResponseBody.setTodo(savedTodo);
+        todoResponseBody.addMessage("Todo with id " + updateTodoStatusDTO.getTodoId() + " was updated");
+        return new ResponseEntity<>(todoResponseBody, HttpStatus.OK);
+    }
 
 }

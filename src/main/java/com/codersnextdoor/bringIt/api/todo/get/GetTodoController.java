@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/todo/")
+@RequestMapping("/api/todo")
 public class GetTodoController {
 
     @Autowired
@@ -29,21 +27,22 @@ public class GetTodoController {
 
     /**
      * GET ALL TODOS:
-     * Rest Path for GET-Request: "localhost:8081/api/todo/"
-     * - Method finds all Todos in the database that are not yet expired (expiredAt > current_timestamp).
+     * Rest Path for GET-Request: "localhost:8081/api/todo"
+     * - Method finds all Todos in the database that are not yet expired (expiredAt > current_timestamp) and
+     *      with status = "Offen".
      * - Todos that are expired are updated and the status is changed to "Abgelaufen".
      * - Todos that are expired a certain number of days ago (DAYS_TODOS_KEPT_IN_DB_WHEN_EXPIRED) are deleted from the database.
      * The static value "days.todos.kept.in.db.after.expired" can be changed in application.properties (default = 7).
      *
      * @return - ResponseEntity with StatusCode 200 (OK). Response includes Set<Todo>
      */
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Set<Todo>> getAll() {
 
         getTodoService.deleteTodosExpiredDaysAgo();
         getTodoService.updateTodoStatus();
 
-        Set<Todo> allTodos = todoRepository.findTodosNotExpired();
+        Set<Todo> allTodos = todoRepository.findTodosNotExpiredAndOpen();
 
         return ResponseEntity.ok(allTodos);
     }
@@ -82,7 +81,8 @@ public class GetTodoController {
      * GET TODO BY POSTAL_CODE OF USER_OFFERED:
      * Rest Path for GET-Request: "localhost:8081/api/todo/postcode/{postcode}"
      * - Method finds all Todos with a specific postalCode of the userOffered
-     *      that are not yet expired (expiredAt > current_timestamp).
+     *      that are not yet expired (expiredAt > current_timestamp)
+     *      with status = "Offen".
      * - Todos that are expired are updated and the status is changed to "Abgelaufen".
      *
      * @param postcode (String)
@@ -104,7 +104,8 @@ public class GetTodoController {
      * GET TODO BY CITY OF USER_OFFERED:
      * Rest Path for GET-Request: "localhost:8081/api/todo/city/{city}"
      * - Method finds all Todos in a specific city of the userOffered
-     *      that are not yet expired (expiredAt > current_timestamp).
+     *      that are not yet expired (expiredAt > current_timestamp)
+     *      with status = "Offen".
      * - Todos that are expired are updated and the status is changed to "Abgelaufen".
      *
      * @param city (String)
@@ -167,4 +168,3 @@ public class GetTodoController {
     }
 
 }
-

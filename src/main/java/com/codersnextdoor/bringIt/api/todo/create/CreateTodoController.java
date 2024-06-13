@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/todo/")
+@RequestMapping("/api/todo")
 public class CreateTodoController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class CreateTodoController {
 
     /**
      * CREATE NEW TODO:
-     * Rest Path for POST-Request: "localhost:8081/api/todo/"
+     * Rest Path for POST-Request: "localhost:8081/api/todo"
      * Method creates a new todo and saves it to the database.
      *
      * @param createTodoDTO - The RequestBody should be a JSON object with the parameters:
