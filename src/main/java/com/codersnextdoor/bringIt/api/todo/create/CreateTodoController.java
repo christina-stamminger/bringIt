@@ -114,7 +114,6 @@ public class CreateTodoController {
                 createTodoDTO.getDescription(),
                 createTodoDTO.getAddInfo(),
                 createTodoDTO.getUploadPath(),
-                LocalDateTime.now(),
                 createTodoDTO.getExpiresAt(),
                 "Offen"
         );

@@ -188,15 +188,14 @@ public class UpdateTodoController {
         if (!updateTodoStatusDTO.getStatus().equals("In Arbeit")
                 && !updateTodoStatusDTO.getStatus().equals("Offen")
                 && !updateTodoStatusDTO.getStatus().equals("Erledigt")) {
-            todoResponseBody.addErrorMessage("Status can only be 'In Arbeit' or 'Offen' or 'Erledigt'.");
+            todoResponseBody.addErrorMessage("Status can only be set to 'In Arbeit' or 'Offen' or 'Erledigt'.");
             return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
         }
         if (updateTodo.getUserTaken() == null && !updateTodoStatusDTO.getStatus().equals("In Arbeit")) {
             todoResponseBody.addErrorMessage("A Todo with status 'Offen' can only be set to 'In Arbeit'.");
             return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
         }
-        if ((updateTodoStatusDTO.getStatus().equals("Erledigt")
-                && updateTodoStatusDTO.getStatus().equals("Offen"))
+        if ((updateTodoStatusDTO.getStatus().equals("Erledigt") || updateTodoStatusDTO.getStatus().equals("Offen"))
                 && !updateTodo.getStatus().equals("In Arbeit")) {
             todoResponseBody.addErrorMessage("Status can only be set to 'Erledigt' or 'Offen' if it is 'In Arbeit'.");
             return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
