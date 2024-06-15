@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import com.codersnextdoor.bringIt.api.EmailService;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -23,6 +24,9 @@ public class UpdateTodoController {
     private TodoRepository todoRepository;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EmailService emailService;
 
 
     /**
@@ -202,6 +206,80 @@ public class UpdateTodoController {
         }
 
 
+        // SEND EMAIL NOTIFICATION TO USER_OFFERED:
+        String mailSubject ="";
+        String mailMessage ="";
+        StringBuilder textPart = new StringBuilder();
+        String status = updateTodoStatusDTO.getStatus();
+
+        switch (status) {
+            case "In Arbeit":
+                mailSubject = "bringIt - Todo IN ARBEIT!";
+                textPart.append("Ihr Todo '" + updateTodo.getTitle()
+                        + "' wurde von '" + userTaken.getUsername() + "' angenommen und der Status auf 'In Arbeit' geändert!");
+                textPart.append("\n \n");
+                textPart.append("User: " + userTaken.getUsername() + "\n");
+                textPart.append("Name: " + userTaken.getFirstName() + " " + userTaken.getLastName() + "\n");
+                textPart.append("Adresse: " + userTaken.getAddress().getStreetNumber() + "\n");
+                textPart.append("   " + userTaken.getAddress().getPostalCode() + " " + userTaken.getAddress().getCity() + "\n");
+                textPart.append("Phone: " + userTaken.getPhone() + "\n");
+                textPart.append("\n \n");
+                textPart.append("Bitte antworten Sie nicht auf diese Nachricht.\n");
+                textPart.append("Ihr bringit-Service-Team");
+
+                break;
+
+
+                mailMessage = "Ihr Todo '" + updateTodo.getTitle()
+                        + "' wurde von '" + userTaken.getUsername() + "' angenommen und der Status auf 'In Arbeit' geändert!"
+                        + "\n \n"
+                        + "User: " + userTaken.getUsername() + "\n"
+                        + "Name: " + userTaken.getFirstName() + " " + userTaken.getLastName() + "\n"
+                        + "Adresse: " + userTaken.getAddress().getStreetNumber() + "\n"
+                        + "               " + userTaken.getAddress().getPostalCode() + " " + userTaken.getAddress().getCity() + "\n"
+                        + "Phone: " + userTaken.getPhone() + "\n"
+                        + "Mail: " + userTaken.getEmail()
+                        + "\n \n"
+                        + "Bitte antworten Sie nicht auf diese Nachricht.\n"
+                        + "Ihr bringit-Service-Team";
+                break;
+            case "Offen":
+                mailSubject = "bringIt - Todo STORNIERT!";
+                mailMessage = "'" + userTaken.getUsername() + "' hat Ihr Todo '" + updateTodo.getTitle() + "' storniert.\n"
+                        + "Der Status wurde auf 'Offen' zurückgesetzt!"
+                        + "\n \n"
+                        + "User: " + userTaken.getUsername() + "\n"
+                        + "Name: " + userTaken.getFirstName() + " " + userTaken.getLastName() + "\n"
+                        + "Adresse: " + userTaken.getAddress().getStreetNumber() + "\n"
+                        + "               " + userTaken.getAddress().getPostalCode() + " " + userTaken.getAddress().getCity() + "\n"
+                        + "Phone: " + userTaken.getPhone() + "\n"
+                        + "Mail: " + userTaken.getEmail()
+                        + "\n \n"
+                        + "Bitte antworten Sie nicht auf diese Nachricht.\n"
+                        + "Ihr bringit-Service-Team";
+                break;
+            case "Erledigt":
+                mailSubject = "bringIt - Todo ERLEDIGT!";
+                mailMessage = "'" + userTaken.getUsername() + "' hat Ihr Todo '" + updateTodo.getTitle() + "' erledigt!\n"
+                        + "\n \n"
+                        + "Bitte antworten Sie nicht auf diese Nachricht.\n"
+                        + "Ihr bringit-Service-Team";
+                break;
+        }
+
+        emailService.sendSimpleEmail(
+                updateTodo.getUserOffered().getEmail(),
+                mailSubject,
+                mailMessage);
+
+        System.out.println(" * * * * * \n"
+                + "Notification-Mail was sent to "
+                + updateTodo.getUserOffered().getUsername()
+                + ", email to: "
+                + updateTodo.getUserOffered().getEmail()
+                + ".");
+
+
         // CHANGE STATUS AND USER_TAKEN / SAVE:
         if (updateTodoStatusDTO.getStatus().equals("Offen")) {
             userTaken = null;
@@ -214,7 +292,11 @@ public class UpdateTodoController {
 
         // RETURN UPDATED TODO:
         todoResponseBody.setTodo(savedTodo);
-        todoResponseBody.addMessage("Todo with id " + updateTodoStatusDTO.getTodoId() + " was updated");
+        todoResponseBody.addMessage("Todo with id "
+                + updateTodoStatusDTO.getTodoId()
+                + " was updated and notification-mail was sent to user "
+                + updateTodo.getUserOffered().getUsername()
+                + ".");
         return new ResponseEntity<>(todoResponseBody, HttpStatus.OK);
     }
 
