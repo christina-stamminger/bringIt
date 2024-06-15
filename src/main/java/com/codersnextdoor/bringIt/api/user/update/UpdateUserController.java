@@ -35,7 +35,7 @@ public class UpdateUserController {
 
         if (optionalUser.isEmpty()) {
             UserResponseBody response = new UserResponseBody();
-            response.addErrorMessage("could not find user by id '" + updateUserDTO.getUserId());
+            response.addErrorMessage("Could not find user by id '" + updateUserDTO.getUserId());
 
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
