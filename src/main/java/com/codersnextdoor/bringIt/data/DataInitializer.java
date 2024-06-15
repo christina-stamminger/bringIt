@@ -118,6 +118,32 @@ public class DataInitializer {
 
         userRepository.save(user3);
 
+        User user4 = new User(
+                address3,
+                "mariadb",
+                "qwertz",
+                "Maria",
+                "Dingsbums",
+                LocalDate.of(1999, 8,7),
+                "mariadb@yahoo.com",
+                "+436501209348756",
+                LocalDateTime.now()
+        );
+        userRepository.save(user4);
+
+        User user5 = new User(
+                address4,
+                "toni",
+                "poiu",
+                "Anton",
+                "Nimmtgernmit",
+                LocalDate.of(2002, 3,4),
+                "toni2002@gmail.com",
+                "+4365000998877112",
+                LocalDateTime.now()
+        );
+        userRepository.save(user5);
+
 
 
         // Create and save todo
