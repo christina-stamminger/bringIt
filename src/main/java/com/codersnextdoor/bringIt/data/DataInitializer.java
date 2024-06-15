@@ -7,7 +7,6 @@ import com.codersnextdoor.bringIt.api.todo.TodoRepository;
 import com.codersnextdoor.bringIt.api.user.User;
 import com.codersnextdoor.bringIt.api.user.UserRepository;
 import jakarta.annotation.PostConstruct;
-import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -229,6 +228,9 @@ public class DataInitializer {
                 "Offen"
         );
         todoRepository.save(todo7);
+
+
+
 
     }
 }
