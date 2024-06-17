@@ -23,12 +23,15 @@ public class UpdateTodoController {
     private TodoRepository todoRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UpdateTodoService updateTodoService;
 
 
     /**
      * UPDATE TODO
      * Rest Path for PUT-Request: "localhost:8081/api/todo"
-     * Method finds an existing todo by id and updates it with the provided values from the Requestbody.
+     * Method finds an existing todo by id and updates it with the provided values from the Requestbody
+     * and generates a Notification-Mail to the userOffered of this todo.
      *
      * @param updateTodoDTO - The RequestBody should be a JSON object with at least one of these parameters:
      *                      todoId (long) - id-Nr of Todo to be updated,
@@ -202,6 +205,10 @@ public class UpdateTodoController {
         }
 
 
+        // SEND EMAIL NOTIFICATION TO USER_OFFERED:
+        updateTodoService.createStatusNotificationMail(updateTodoStatusDTO.getStatus(), updateTodo, userTaken);
+
+
         // CHANGE STATUS AND USER_TAKEN / SAVE:
         if (updateTodoStatusDTO.getStatus().equals("Offen")) {
             userTaken = null;
@@ -214,7 +221,11 @@ public class UpdateTodoController {
 
         // RETURN UPDATED TODO:
         todoResponseBody.setTodo(savedTodo);
-        todoResponseBody.addMessage("Todo with id " + updateTodoStatusDTO.getTodoId() + " was updated");
+        todoResponseBody.addMessage("Todo with id "
+                + updateTodoStatusDTO.getTodoId()
+                + " was updated and notification-mail was sent to user "
+                + updateTodo.getUserOffered().getUsername()
+                + ".");
         return new ResponseEntity<>(todoResponseBody, HttpStatus.OK);
     }
 
