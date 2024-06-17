@@ -7,7 +7,6 @@ import com.codersnextdoor.bringIt.api.todo.TodoRepository;
 import com.codersnextdoor.bringIt.api.user.User;
 import com.codersnextdoor.bringIt.api.user.UserRepository;
 import jakarta.annotation.PostConstruct;
-import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,11 +117,36 @@ public class DataInitializer {
 
         userRepository.save(user3);
 
+        User user4 = new User(
+                address3,
+                "mariadb",
+                "qwertz",
+                "Maria",
+                "Dingsbums",
+                LocalDate.of(1999, 8,7),
+                "mariadb@yahoo.com",
+                "+436501209348756",
+                LocalDateTime.now()
+        );
+        userRepository.save(user4);
+
+        User user5 = new User(
+                address4,
+                "toni",
+                "poiu",
+                "Anton",
+                "Nimmtgernmit",
+                LocalDate.of(2002, 3,4),
+                "toni2002@gmail.com",
+                "+4365000998877112",
+                LocalDateTime.now()
+        );
+        userRepository.save(user5);
+
 
 
         // Create and save todo
         Todo todo1 = new Todo();
-        todo1.setCreatedAt(LocalDateTime.now());
         todo1.setTitle("Supermarktabholung");
         todo1.setDescription("Bitte um folgende Mitnahme: Roggenbrot, BioMilch 2l");
         todo1.setAddInfo("Bitte Frischmilch oder länger frisch, keine H-Milch");
@@ -135,7 +159,6 @@ public class DataInitializer {
         todoRepository.save(todo1);
 
         Todo todo2 = new Todo();
-        todo2.setCreatedAt(LocalDateTime.now());
         todo2.setTitle("Apothekenabholung");
         todo2.setDescription("Bitte um folgende Abholung: Mexalen 500mg");
         todo2.setAddInfo("Bereits bezahlt, wurde bestellt ist abholbereit");
@@ -147,7 +170,6 @@ public class DataInitializer {
         todoRepository.save(todo2);
 
         Todo todo3 = new Todo();
-        todo3.setCreatedAt(LocalDateTime.now());
         todo3.setTitle("Drogerie");
         todo3.setDescription("Bitte um folgende Besorgung: Milchpulver PRE1 Babynahrung");
         todo3.setAddInfo("Bitte von Hipp, Alternative DM Eigenmarke");
@@ -159,7 +181,6 @@ public class DataInitializer {
         todoRepository.save(todo3);
 
         Todo todo4 = new Todo();
-        todo4.setCreatedAt(LocalDateTime.now());
         todo4.setTitle("Supermarkt");
         todo4.setDescription("Bitte um folgende Besorgung: 1kg Bio Äpfel, 2 Gurken, Ziegenkäse");
         todo4.setAddInfo("Bitte Bio, wenn nicht schön /vorhanden dann normal");
@@ -171,7 +192,6 @@ public class DataInitializer {
         todoRepository.save(todo4);
 
         Todo todo5= new Todo();
-        todo5.setCreatedAt(LocalDateTime.now());
         todo5.setTitle("Baumarkt");
         todo5.setDescription("Bitte um folgende Besorgung: 1 Kartusche Silikon grau");
         todo5.setAddInfo("Bitte von OBI Baumarkt");
@@ -191,7 +211,6 @@ public class DataInitializer {
                 "12 Eier vom Markt mitnehmen",
                 "Markt oder Bauer oder Supermarkt",
                 null,
-                LocalDateTime.now(),
                 LocalDateTime.of(2024,6,1,10,0),
                 "In Arbeit"
         );
@@ -205,11 +224,13 @@ public class DataInitializer {
                 "Äpfel",
                 "Bitte nicht vom Supermarkt",
                 null,
-                LocalDateTime.now(),
                 LocalDateTime.of(2024,6,8,16,0),
                 "Offen"
         );
         todoRepository.save(todo7);
+
+
+
 
     }
 }

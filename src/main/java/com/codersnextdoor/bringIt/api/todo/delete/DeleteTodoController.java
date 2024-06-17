@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/todo/")
+@RequestMapping("/api/todo")
 
 public class DeleteTodoController {
 
@@ -41,7 +41,7 @@ public class DeleteTodoController {
 
         TodoResponseBody todoResponseBody = new TodoResponseBody();
         if (!optionalTodo.isPresent()) {
-            todoResponseBody.addErrorMessage("Todo with id " + id + "does not exist");
+            todoResponseBody.addErrorMessage("Todo with id " + id + " does not exist");
             return new ResponseEntity(todoResponseBody, HttpStatus.NOT_FOUND);
         }
 

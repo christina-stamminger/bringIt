@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/todo/")
+@RequestMapping("/api/todo")
 public class GetTodoController {
 
     @Autowired
@@ -26,33 +24,34 @@ public class GetTodoController {
     @Autowired
     private GetTodoService getTodoService;
 
+
     /**
      * GET ALL TODOS:
-     * Rest Path for GET-Request: "localhost:8081/api/todo/"
-     * - Method finds all Todos in the database that are not yet expired (expiredAt > current_timestamp).
+     * Rest Path for GET-Request: "localhost:8081/api/todo"
+     * - Method finds all Todos in the database that are not yet expired (expiredAt > current_timestamp) and
+     *      with status = "Offen".
      * - Todos that are expired are updated and the status is changed to "Abgelaufen".
-     * - Todos that are expired a certain number of days ago (REMAINING_DAYS_IN_DB) are deleted from the database.
-     * The static variable REMAINING_DAYS_IN_DB can be changed in the GetTodoService-class.
+     * - Todos that are expired a certain number of days ago (DAYS_TODOS_KEPT_IN_DB_WHEN_EXPIRED) are deleted from the database.
+     * The static value "days.todos.kept.in.db.after.expired" can be changed in application.properties (default = 7).
      *
      * @return - ResponseEntity with StatusCode 200 (OK). Response includes Set<Todo>
      */
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Set<Todo>> getAll() {
 
         getTodoService.deleteTodosExpiredDaysAgo();
         getTodoService.updateTodoStatus();
 
-        Set<Todo> allTodos = todoRepository.findTodosNotExpired();
+        Set<Todo> allTodos = todoRepository.findTodosNotExpiredAndOpen();
 
         return ResponseEntity.ok(allTodos);
     }
 
 
-
     /**
      * GET TODO BY ID:
      * Rest Path for GET-Request: "localhost:8081/api/todo/{id}"
-     * Method finds Todo with a specific id in the database and checks if this Todo actually exists.
+     * Method finds Todo with a specific id in the database.
      *
      * @param id (long) of the Todo
      * @return - ResponseBody incl. the wanted Todo, a pos. response message and StatusCode 302 (FOUND).
@@ -78,15 +77,50 @@ public class GetTodoController {
     }
 
 
-    // NOT YET:
-    // GET TODO BY postalCode OF UserOffered
+    /**
+     * GET TODO BY POSTAL_CODE OF USER_OFFERED:
+     * Rest Path for GET-Request: "localhost:8081/api/todo/postcode/{postcode}"
+     * - Method finds all Todos with a specific postalCode of the userOffered
+     *      that are not yet expired (expiredAt > current_timestamp)
+     *      with status = "Offen".
+     * - Todos that are expired are updated and the status is changed to "Abgelaufen".
+     *
+     * @param postcode (String)
+     * @return - ResponseEntity with StatusCode 200 (OK). Response includes Set<Todo>
+     */
+    @GetMapping("/postcode/{postcode}")
+    public ResponseEntity<Set<Todo>> getTodoByPostalCode(
+            @PathVariable
+            String postcode) {
+
+        getTodoService.updateTodoStatus();
+        Set<Todo> todosOfPostalCode = todoRepository.findTodoByPostalCode(postcode);
+
+        return ResponseEntity.ok(todosOfPostalCode);
+    }
 
 
+    /**
+     * GET TODO BY CITY OF USER_OFFERED:
+     * Rest Path for GET-Request: "localhost:8081/api/todo/city/{city}"
+     * - Method finds all Todos in a specific city of the userOffered
+     *      that are not yet expired (expiredAt > current_timestamp)
+     *      with status = "Offen".
+     * - Todos that are expired are updated and the status is changed to "Abgelaufen".
+     *
+     * @param city (String)
+     * @return - ResponseEntity with StatusCode 200 (OK). Response includes Set<Todo>
+     */
+    @GetMapping("/city/{city}")
+    public ResponseEntity<Set<Todo>> getTodoByCity(
+            @PathVariable
+            String city) {
 
-    // NOT YET:
-    // GET TODO BY city OF UserOffered
+        getTodoService.updateTodoStatus();
+        Set<Todo> todosInCity = todoRepository.findTodoByCity(city);
 
-
+        return ResponseEntity.ok(todosInCity);
+    }
 
 
     /**
@@ -112,7 +146,6 @@ public class GetTodoController {
     }
 
 
-
     /**
      * GET TODO BY userId TAKEN:
      * Rest Path for GET-Request: "localhost:8081/api/todo/takenByUser/{id}"
@@ -134,6 +167,4 @@ public class GetTodoController {
         return ResponseEntity.ok(takenTodos);
     }
 
-
 }
-

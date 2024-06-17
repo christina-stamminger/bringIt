@@ -45,10 +45,17 @@ public class UpdateUserController {
         if(!StringUtils.isEmpty(updateUserDTO.getFirstName())) {
             user.setFirstName(updateUserDTO.getFirstName());
         }
-
-
         if(!StringUtils.isEmpty(updateUserDTO.getLastName())) {
             user.setLastName(updateUserDTO.getLastName());
+        }
+        if (updateUserDTO.getDateOfBirth() != null) {
+            user.setDateOfBirth(updateUserDTO.getDateOfBirth());
+        }
+        if (!StringUtils.isEmpty(updateUserDTO.getEmail())) {
+            user.setEmail(updateUserDTO.getEmail());
+        }
+        if (!StringUtils.isEmpty(updateUserDTO.getPhone())) {
+            user.setPhone(updateUserDTO.getPhone());
         }
 
         this.userRepository.save(user);
