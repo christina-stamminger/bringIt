@@ -1,12 +1,10 @@
-package com.codersnextdoor.bringIt.api.authentication;
+package com.codersnextdoor.bringIt.api.user.auth;
 
-public class LoginRequestDTO {
-
+public class LoginDTO {
     private String username;
     private String password;
 
     // Getters and Setters
-
     public String getUsername() {
         return username;
     }

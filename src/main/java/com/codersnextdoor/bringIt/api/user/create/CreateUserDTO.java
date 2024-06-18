@@ -1,6 +1,5 @@
 package com.codersnextdoor.bringIt.api.user.create;
 
-import com.codersnextdoor.bringIt.api.address.Address;
 import com.codersnextdoor.bringIt.api.address.create.CreateAddressDTO;
 
 import java.time.LocalDate;
@@ -38,15 +37,7 @@ public class CreateUserDTO {
         this.address = address;
     }
 
-    /*
-            public long getAddressId() {
-                return addressId;
-            }
 
-            public void setAddressId(long addressId) {
-                this.addressId = addressId;
-            }
-        */
     public String getFirstName() {
         return firstName;
     }
