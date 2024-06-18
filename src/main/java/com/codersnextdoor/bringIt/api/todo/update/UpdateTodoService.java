@@ -4,6 +4,7 @@ import com.codersnextdoor.bringIt.api.EmailService;
 import com.codersnextdoor.bringIt.api.todo.Todo;
 import com.codersnextdoor.bringIt.api.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
@@ -13,6 +14,7 @@ public class UpdateTodoService {
     @Autowired
     private EmailService emailService;
 
+    @Async
     public void createStatusNotificationMail (String todoStatus, Todo updateTodo, User userTaken) {
 
         String mailSubject = "";
