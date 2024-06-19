@@ -23,7 +23,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
 
-
     private final PasswordEncoder passwordEncoder;
 
     @Autowired

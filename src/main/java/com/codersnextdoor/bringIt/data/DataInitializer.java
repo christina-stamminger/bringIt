@@ -6,8 +6,12 @@ import com.codersnextdoor.bringIt.api.todo.Todo;
 import com.codersnextdoor.bringIt.api.todo.TodoRepository;
 import com.codersnextdoor.bringIt.api.user.User;
 import com.codersnextdoor.bringIt.api.user.UserRepository;
+import com.codersnextdoor.bringIt.api.user.create.UserService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +25,9 @@ public class DataInitializer {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public PasswordEncoder passwordEncoder;
 
     @Autowired
     private AddressRepository addressRepository;
@@ -86,7 +93,9 @@ public class DataInitializer {
         user1.setLastName("Schmidt");
         user1.setDateOfBirth(LocalDate.of(1990, 5,10));
         user1.setUsername("Sarah1111");
-        user1.setPassword("xxx");
+        //user1.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+        user1.setPassword(passwordEncoder.encode("test")); // Hash the password
+
         user1.setEmail("sarah@gmail.com");
         user1.setPhone("+43676444818027");
         user1.setAddress(address1);
@@ -98,7 +107,7 @@ public class DataInitializer {
         user2.setLastName("Müller");
         user2.setDateOfBirth(LocalDate.of(1980, 5,13));
         user2.setUsername("Markus12345");
-        user2.setPassword("yyy");
+        user2.setPassword(passwordEncoder.encode("test")); // Hash the password
         user2.setEmail("markus@gmail.com");
         user2.setPhone("+436508280857");
         user2.setAddress(address1);
@@ -110,7 +119,7 @@ public class DataInitializer {
         user3.setLastName("Strudel");
         user3.setDateOfBirth(LocalDate.of(1974, 9,24));
         user3.setUsername("Susi04");
-        user3.setPassword("ppp");
+        user3.setPassword(passwordEncoder.encode("test")); // Hash the password
         user3.setEmail("susi@gmail.com");
         user3.setPhone("+436643475661");
         user3.setAddress(address2);
@@ -120,7 +129,7 @@ public class DataInitializer {
         User user4 = new User(
                 address3,
                 "mariadb",
-                "qwertz",
+                passwordEncoder.encode("test"),
                 "Maria",
                 "Dingsbums",
                 LocalDate.of(1999, 8,7),
@@ -133,7 +142,7 @@ public class DataInitializer {
         User user5 = new User(
                 address4,
                 "toni",
-                "poiu",
+                passwordEncoder.encode("test"),
                 "Anton",
                 "Nimmtgernmit",
                 LocalDate.of(2002, 3,4),

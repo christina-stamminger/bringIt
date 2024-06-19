@@ -2,6 +2,7 @@ package com.codersnextdoor.bringIt.api.user.auth;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,27 +36,18 @@ public class AuthController {
     }
     // endpoint for user login
     @PostMapping("/login")
-    public String login(@RequestBody LoginDTO loginDTO) {
-        // authenticate the user using username and password
+    public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
-                // creates an authentication token using the username and password from the loginDTO
                 new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
         );
-        // sets the authentication object in the security context, marking the user as authenticated
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        // logs the successful log in event
         LOG.debug("User logged in: {}", loginDTO.getUsername());
-        return "Login successful";
-    }
 
-    @PostMapping("/token")
-    public String token(Authentication authentication) {
-        // logs a debug message
-        LOG.debug("Token requested for user:{}", authentication.getName());
-        // generates a token for auth user using tokenService
+        // Generate token
         String token = tokenService.generateToken(authentication);
-        LOG.debug("Token granted {}", token);
-        return token;
+
+        // Return token in JSON response
+        return ResponseEntity.ok(new TokenResponseDTO(token));
     }
 
 }
