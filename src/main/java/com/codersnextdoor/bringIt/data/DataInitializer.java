@@ -134,8 +134,7 @@ public class DataInitializer {
                 "Dingsbums",
                 LocalDate.of(1999, 8,7),
                 "mariadb@yahoo.com",
-                "+436501209348756",
-                LocalDateTime.now()
+                "+436501209348756"
         );
         userRepository.save(user4);
 
@@ -147,8 +146,7 @@ public class DataInitializer {
                 "Nimmtgernmit",
                 LocalDate.of(2002, 3,4),
                 "toni2002@gmail.com",
-                "+4365000998877112",
-                LocalDateTime.now()
+                "+4365000998877112"
         );
         userRepository.save(user5);
 

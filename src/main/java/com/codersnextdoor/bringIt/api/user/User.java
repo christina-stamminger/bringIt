@@ -61,19 +61,16 @@ public class User {
     private String phone;
 
     @CreationTimestamp
-    @Column(name="created_at", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     //empty constructor
     public User() {
 
     }
-/*
-    public User(Address address, String firstName, String lastName, String username, String passwordHash, LocalDate dateOfBirth, String email, String phone) {
-    }
-*/
+
     //constructor
-    public User(Address address, String username, String password, String firstName, String lastName, LocalDate dateOfBirth,String email, String phone, LocalDateTime createdAt) {
+    public User(Address address, String username, String password, String firstName, String lastName, LocalDate dateOfBirth,String email, String phone) {
 
         this.address = address;
         this.username = username;
@@ -83,10 +80,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.phone = phone;
-        this.createdAt = createdAt;
     }
-
-
 
 
     //getter and setter

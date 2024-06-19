@@ -54,6 +54,9 @@ public class DeleteTodoController {
         Todo deleteTodo = optionalTodo.get();
         if (deleteTodo.getStatus().equals("In Arbeit")) {
             deleteTodoService.createDeleteNotificationMail(deleteTodo);
+            todoResponseBody.addMessage("A notification-mail was sent to user "
+                    + deleteTodo.getUserOffered().getUsername()
+                    + ".");
         }
 
 

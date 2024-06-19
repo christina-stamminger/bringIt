@@ -37,9 +37,6 @@ public class Address {
 
     private String city;
 
-    @CreationTimestamp
-    @Column(name="created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
 
     // empty constructor
     public Address() {
@@ -53,7 +50,6 @@ public class Address {
         this.streetNumber = streetNumber;
         this.postalCode = postalCode;
         this.city = city;
-        this.createdAt = createdAt;
     }
 
     // constructor
@@ -107,12 +103,5 @@ public class Address {
         this.city = city;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
 

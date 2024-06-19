@@ -25,7 +25,6 @@ public class CreateUserDTO {
 
     private String phone;
 
-    private LocalDateTime createdAt;
 
     // getter and setter
 
@@ -94,11 +93,4 @@ public class CreateUserDTO {
         this.phone = phone;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }

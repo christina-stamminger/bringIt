@@ -22,7 +22,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -79,7 +78,7 @@ public class UserService {
         user.setDateOfBirth(createUserDTO.getDateOfBirth());
         user.setEmail(createUserDTO.getEmail());
         user.setPhone(createUserDTO.getPhone());
-        user.setCreatedAt(createUserDTO.getCreatedAt());
+
 
         // Save the new user to the repository
         try {
@@ -92,13 +91,6 @@ public class UserService {
 
         return body;
     }
-/*
-    public boolean loginUser(String username, String password) {
-        return userRepository.findByUsername(username)
-                .map(user -> passwordEncoder.matches(password, user.getPassword()))
-                .orElse(false);
-    }
-*/
 
 }
 
