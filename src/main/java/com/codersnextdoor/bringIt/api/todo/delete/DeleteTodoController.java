@@ -22,10 +22,14 @@ public class DeleteTodoController {
     @Autowired
     private TodoRepository todoRepository;
 
+    @Autowired
+    private DeleteTodoService deleteTodoService;
+
     /**
      * DELETE TODO BY ID:
      * Rest Path for DELETE-Request: "localhost:8081/api/todo/{id}"
-     * Method finds Todo with a specific id in the database, checks if it exists and if so removes it from database.
+     * Method finds Todo with a specific id in the database, checks if it exists and if so removes it from database
+     * and generates a Notification-Mail to the userTaken of this todo if the status is "In Arbeit".
      *
      * @param id (long) of the Todo
      * @return  - ResponseBody incl. confirmation message, StatusCode 200 (OK)
@@ -45,8 +49,19 @@ public class DeleteTodoController {
             return new ResponseEntity(todoResponseBody, HttpStatus.NOT_FOUND);
         }
 
+
+        // CASE TODO-STATUS = "In Arbeit": SEND EMAIL NOTIFICATION TO USER_TAKEN:
+        Todo deleteTodo = optionalTodo.get();
+        if (deleteTodo.getStatus().equals("In Arbeit")) {
+            deleteTodoService.createDeleteNotificationMail(deleteTodo);
+        }
+
+
+        // DELETE TODO:
         todoRepository .deleteById(id);
 
+
+        // VERIFY IF TODO HAS BEEN DELETED:
         optionalTodo = todoRepository.findById(id);
 
         if (optionalTodo.isPresent()) {

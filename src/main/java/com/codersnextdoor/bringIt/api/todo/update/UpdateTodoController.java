@@ -30,8 +30,7 @@ public class UpdateTodoController {
     /**
      * UPDATE TODO
      * Rest Path for PUT-Request: "localhost:8081/api/todo"
-     * Method finds an existing todo by id and updates it with the provided values from the Requestbody
-     * and generates a Notification-Mail to the userOffered of this todo.
+     * Method finds an existing todo by id and updates it with the provided values from the Requestbody.
      *
      * @param updateTodoDTO - The RequestBody should be a JSON object with at least one of these parameters:
      *                      todoId (long) - id-Nr of Todo to be updated,
@@ -129,7 +128,8 @@ public class UpdateTodoController {
     /**
      * UPDATE TODO-STATUS:
      * Rest Path for PUT-Request: "localhost:8081/api/todo/status"
-     * Method finds existing todo by id and updates its status and userTaken with the provided values from the Requestbody.
+     * Method finds existing todo by id and updates its status and userTaken with the provided values from the Requestbody
+     * and generates a Notification-Mail to the userOffered of this todo.
      *
      * @param updateTodoStatusDTO - The RequestBody should be a JSON object with these parameters:
      *                            - todoId (long) - id-Nr of Todo to be updated,
@@ -206,6 +206,7 @@ public class UpdateTodoController {
 
 
         // SEND EMAIL NOTIFICATION TO USER_OFFERED:
+
         updateTodoService.createStatusNotificationMail(updateTodoStatusDTO.getStatus(), updateTodo, userTaken);
 
 
