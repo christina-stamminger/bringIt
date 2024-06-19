@@ -5,8 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
+
+import static org.hibernate.annotations.OnDeleteAction.SET_NULL;
 
 
 // CHECK IF EMAIL IS IN EMAIL-FORMAT:
@@ -35,10 +39,12 @@ public class Todo {
     private long todoId;
 
     @ManyToOne
-    @JoinColumn(name = "useroffered_id", referencedColumnName = "user_id")
+    @OnDelete(action = SET_NULL)
+    @JoinColumn(name = "useroffered_id", referencedColumnName = "user_id", cascade = CascadeType.)
     private User userOffered;
 
     @ManyToOne
+    @OnDelete(action = SET_NULL)
     @JoinColumn(name = "usertaken_id", referencedColumnName = "user_id")
     private User userTaken;
 

@@ -27,7 +27,7 @@ public class Address {
     @Column(name = "address_id")
     private long addressId;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<User> users;
 

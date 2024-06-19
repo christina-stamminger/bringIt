@@ -33,7 +33,7 @@ public class User {
      @JoinColumn(name = "address_id")
      private Address address;
 
-    @OneToMany(mappedBy="userOffered")
+    @OneToMany(mappedBy="userOffered", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Todo> todosOffered;
 
