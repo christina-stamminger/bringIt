@@ -4,12 +4,20 @@ import com.codersnextdoor.bringIt.api.todo.Todo;
 import com.codersnextdoor.bringIt.api.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import static org.hibernate.annotations.OnDeleteAction.SET_NULL;
+
+@Setter
+@Getter
 @Entity
 @Table(name= "TB_ADDRESS")
 public class Address {
@@ -27,7 +35,8 @@ public class Address {
     @Column(name = "address_id")
     private long addressId;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "address"   /* , cascade = CascadeType.ALL, orphanRemoval = true  */)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Set<User> users;
 
@@ -61,47 +70,7 @@ public class Address {
     }
 
 
-    // getter and setter
-
-    public long getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(long addressId) {
-        this.addressId = addressId;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    public String getStreetNumber() {
-        return streetNumber;
-    }
-
-    public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
+    // getter and setter by lombok
 
 }
 

@@ -1,6 +1,7 @@
 package com.codersnextdoor.bringIt.api.user.delete;
 
 import com.codersnextdoor.bringIt.api.ResponseBody;
+import com.codersnextdoor.bringIt.api.address.AddressRepository;
 import com.codersnextdoor.bringIt.api.user.User;
 import com.codersnextdoor.bringIt.api.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class DeleteUserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseBody> delete(
@@ -26,6 +30,7 @@ public class DeleteUserController {
             long id) {
 
         userRepository.deleteById(id);
+        addressRepository.deleteOrphanedAddresses();
 
         Optional<User> optionalUser = userRepository.findById(id);
 
@@ -57,7 +62,7 @@ public class DeleteUserController {
         User user = optionalUser.get();
 
         this.userRepository.deleteById(user.getUserId());
-
+        this.addressRepository.deleteOrphanedAddresses();
 
         optionalUser = userRepository.findByUsername(username);
 
