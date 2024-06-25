@@ -6,6 +6,7 @@ import com.codersnextdoor.bringIt.api.user.UserResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +22,12 @@ public class GetUserController {
 
     @Autowired
     private UserRepository userRepository;
+    //    @Autowired
+//    private PasswordGeneratorService passwordGeneratorService;
     @Autowired
-    private PasswordGeneratorService passwordGeneratorService;
+    private GetUserService getUserService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -37,7 +42,7 @@ public class GetUserController {
 
         Optional<User> optionalUser = this.userRepository.findByUsername(username);
 
-        if(!optionalUser.isPresent()) {
+        if (!optionalUser.isPresent()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
 
@@ -53,7 +58,7 @@ public class GetUserController {
 
         Optional<User> optionalUser = this.userRepository.findById(id);
 
-        if(!optionalUser.isPresent()) {
+        if (!optionalUser.isPresent()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
 
@@ -63,34 +68,50 @@ public class GetUserController {
     }
 
 
+    @GetMapping("/getpassword/{username}")
+    public ResponseEntity<UserResponseBody> getNewPassword(
+            @PathVariable
+            String username) {
 
-//    @GetMapping("/getpassword/{username}")
-//    public ResponseEntity<User> getNewPassword(
-//                @PathVariable
-//                String username) {
-//
-//        UserResponseBody userResponseBody = new UserResponseBody();
+        UserResponseBody userResponseBody = new UserResponseBody();
 
         // CHECK IF USER EXISTS
-//        Optional<User> optionalUser = this.userRepository.findByUsername(username);
-//        if (optionalUser.isEmpty()) {
-//            userResponseBody.addErrorMessage("A user with the name " + username + " doesn't exist.");
-//            return new ResponseEntity(userResponseBody, HttpStatus.NOT_FOUND);
-//        }
-//
-//        User user = optionalUser.get();
+        Optional<User> optionalUser = this.userRepository.findByUsername(username);
+        if (optionalUser.isEmpty()) {
+            userResponseBody.addErrorMessage("User '" + username + "' doesn't exist.");
+            return new ResponseEntity(userResponseBody, HttpStatus.NOT_FOUND);
+        }
+
+        User user = optionalUser.get();
+        String oldPasswordHash = user.getPassword();
 
         // CREATE NEW PASSWORD
+        String newPassword = getUserService.generatePassword();
+        System.out.println("New Password: " + newPassword);
 
 
-    private static final int PASSWORD_LENGTH = 12; // Fixed password length
+        // SAVE NEW PASSWORD TO DATABASE:
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
 
 
-    @GetMapping("/generate-password")
-    public ResponseEntity<String> generatePassword() {
-        String pw = passwordGeneratorService.generatePassword(PASSWORD_LENGTH);
-        System.out.println("New Password: " + pw);
-        return ResponseEntity.ok(pw);
+        // CHECK IF SAVE WAS SUCCESSFUL:
+        optionalUser = this.userRepository.findByUsername(user.getUsername());
+        String savedUserPasswordHash = optionalUser.get().getPassword();
+        if (savedUserPasswordHash.equals(oldPasswordHash)) {
+            userResponseBody.addErrorMessage("New Password could not be saved.");
+        }
+
+        // CREATE AND SEND MAIL TO USER:
+        getUserService.createNewLoginDataMail(user, newPassword);
+
+        userResponseBody.setUser(user);
+
+        // return success-message
+        userResponseBody.addMessage("New LoginData were sent by mail to user " + user.getUsername()
+                + ". to email: " + user.getEmail());
+        return new ResponseEntity<>(userResponseBody, HttpStatus.OK);
+
     }
 
 

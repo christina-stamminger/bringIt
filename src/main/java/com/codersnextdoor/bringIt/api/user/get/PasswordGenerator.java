@@ -1,8 +1,10 @@
 package com.codersnextdoor.bringIt.api.user.get;
 
 import java.security.SecureRandom;
+
 public class PasswordGenerator {
-    private static final String ALLOWED_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
+//    private static final String ALLOWED_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
+    private static final String ALLOWED_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()%";
     public static String generateRandomPassword(int length) {
         if (length <= 0) {throw new IllegalArgumentException("Password length must be greater than 0");
         }
