@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -49,6 +50,20 @@ public class UserService {
 
         // Extract address from DTO
         CreateAddressDTO addressDTO = createUserDTO.getAddress();
+/*
+        // Validate postal code length (max. 4 chars)
+        if(addressDTO.getPostalCode() == null || addressDTO.getPostalCode().length() != 4) {
+            body.addErrorMessage("Postal Code must be 4 characters long.");
+            return body;
+        }
+*/
+        // Validate date of birth (user must be older than 12 years)
+        LocalDate currentDate = LocalDate.now();
+        LocalDate minAllowedDate = currentDate.minusYears(12);
+        if (createUserDTO.getDateOfBirth().isAfter(minAllowedDate)) {
+            body.addErrorMessage("User must be at least 12 years old.");
+            return body;
+        }
 
         // Check if address exists
         Optional<Address> optionalAddress = addressRepository.findByStreetNumberAndPostalCodeAndCity(
@@ -92,13 +107,7 @@ public class UserService {
 
         return body;
     }
-/*
-    public boolean loginUser(String username, String password) {
-        return userRepository.findByUsername(username)
-                .map(user -> passwordEncoder.matches(password, user.getPassword()))
-                .orElse(false);
-    }
-*/
+
 
 }
 

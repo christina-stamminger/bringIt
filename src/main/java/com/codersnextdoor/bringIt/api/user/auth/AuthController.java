@@ -1,5 +1,7 @@
 package com.codersnextdoor.bringIt.api.user.auth;
 
+import com.codersnextdoor.bringIt.api.user.User;
+import com.codersnextdoor.bringIt.api.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -25,16 +27,20 @@ public class AuthController {
     // a spring security component to handle auth process
     private final AuthenticationManager authenticationManager;
 
+    private final UserRepository userRepository; // Inject UserRepository
+
     // constructor injection for dependencies
     // dependency Injection (DI) is a design pattern used to implement IoC (Inversion of Control).
     // it allows an object to receive its dependencies from an external source rather than creating them itself.
     // here spring Boot automatically injects instances of TokenService and AuthenticationManager into the AuthController when it is created.
     // This is called constructor-based dependency injection.
-    public AuthController(TokenService tokenService, AuthenticationManager authenticationManager) {
+    public AuthController(TokenService tokenService, AuthenticationManager authenticationManager, UserRepository userRepository) {
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
     }
     // endpoint for user login
+
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
@@ -43,11 +49,16 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         LOG.debug("User logged in: {}", loginDTO.getUsername());
 
+        // Fetch user details including userId
+        User user = userRepository.findByUsername(loginDTO.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found: " + loginDTO.getUsername()));
+
+        System.out.println("User ID: " + user.getUserId());
+
         // Generate token
         String token = tokenService.generateToken(authentication);
 
         // Return token in JSON response
-        return ResponseEntity.ok(new TokenResponseDTO(token));
+        return ResponseEntity.ok(new TokenResponseDTO(token, user.getUserId()));
     }
-
 }
