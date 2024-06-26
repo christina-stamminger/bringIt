@@ -3,10 +3,17 @@ package com.codersnextdoor.bringIt.api.todo;
 import com.codersnextdoor.bringIt.api.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
+
+import static org.hibernate.annotations.OnDeleteAction.CASCADE;
+import static org.hibernate.annotations.OnDeleteAction.SET_NULL;
 
 
 // CHECK IF EMAIL IS IN EMAIL-FORMAT:
@@ -16,6 +23,8 @@ import java.time.LocalDateTime;
 //   if (!email.matches(regexPatternEmail)) { ... excepteion ... }
 //
 
+@Setter
+@Getter
 @Entity
 @Table(name = "TB_TODO")
 public class Todo {
@@ -35,10 +44,12 @@ public class Todo {
     private long todoId;
 
     @ManyToOne
+    @OnDelete(action = CASCADE)
     @JoinColumn(name = "useroffered_id", referencedColumnName = "user_id")
     private User userOffered;
 
     @ManyToOne
+    @OnDelete(action = SET_NULL)
     @JoinColumn(name = "usertaken_id", referencedColumnName = "user_id")
     private User userTaken;
 
@@ -94,96 +105,7 @@ public class Todo {
     }
 
 
-    //getter and setter
-
-
-    public long getTodoId() {
-        return todoId;
-    }
-
-    public void setTodoId(long todoId) {
-        this.todoId = todoId;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAddInfo() {
-        return addInfo;
-    }
-
-    public void setAddInfo(String addInfo) {
-        this.addInfo = addInfo;
-    }
-
-    public String getUploadPath() {
-        return uploadPath;
-    }
-
-    public void setUploadPath(String uploadPath) {
-        this.uploadPath = uploadPath;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public User getUserTaken() {
-        return userTaken;
-    }
-
-    public void setUserTaken(User userTaken) {
-        this.userTaken = userTaken;
-    }
-
-    public User getUserOffered() {
-        return userOffered;
-    }
-
-    public void setUserOffered(User userOffered) {
-        this.userOffered = userOffered;
-    }
+    //getter and setter by lombok
 
 
 }

@@ -44,9 +44,9 @@ public class DeleteTodoController {
         Optional<Todo> optionalTodo = todoRepository.findById(id);
 
         TodoResponseBody todoResponseBody = new TodoResponseBody();
-        if (!optionalTodo.isPresent()) {
+        if (optionalTodo.isEmpty()) {
             todoResponseBody.addErrorMessage("Todo with id " + id + " does not exist");
-            return new ResponseEntity(todoResponseBody, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.NOT_FOUND);
         }
 
 
@@ -54,6 +54,9 @@ public class DeleteTodoController {
         Todo deleteTodo = optionalTodo.get();
         if (deleteTodo.getStatus().equals("In Arbeit")) {
             deleteTodoService.createDeleteNotificationMail(deleteTodo);
+            todoResponseBody.addMessage("A notification-mail was sent to user "
+                    + deleteTodo.getUserOffered().getUsername()
+                    + ".");
         }
 
 
@@ -66,10 +69,10 @@ public class DeleteTodoController {
 
         if (optionalTodo.isPresent()) {
             todoResponseBody.addErrorMessage("Could not delete todo with id " + id + ".");
-            return new ResponseEntity(todoResponseBody, HttpStatus.SERVICE_UNAVAILABLE);
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.SERVICE_UNAVAILABLE);
         } else {
             todoResponseBody.addMessage("Todo " + id + " has been deleted");
-            return new ResponseEntity(todoResponseBody, HttpStatus.OK);
+            return new ResponseEntity<>(todoResponseBody, HttpStatus.OK);
         }
 
     }

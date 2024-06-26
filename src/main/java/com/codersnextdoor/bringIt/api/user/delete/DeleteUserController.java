@@ -1,6 +1,8 @@
 package com.codersnextdoor.bringIt.api.user.delete;
 
 import com.codersnextdoor.bringIt.api.ResponseBody;
+import com.codersnextdoor.bringIt.api.address.AddressRepository;
+import com.codersnextdoor.bringIt.api.todo.TodoRepository;
 import com.codersnextdoor.bringIt.api.user.User;
 import com.codersnextdoor.bringIt.api.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,10 @@ import java.util.Optional;
 public class DeleteUserController {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private TodoRepository todoRepository;
 
 
     @DeleteMapping("/{id}")
@@ -25,8 +31,23 @@ public class DeleteUserController {
             @PathVariable
             long id) {
 
-        userRepository.deleteById(id);
+        // CHECK IF USER EXISTS
 
+
+        // CASE: TODOS EXIST WHERE USER = USER_OFFERED:
+        // DELETE THOSE TODOS, SEND NOTIFICATION TO USER_TAKEN (ONLY WHEN STATUS = "In Arbeit")
+
+
+        // CASE: TODOS EXIST WHERE USER = USER_TAKEN (STATUS = "In Arbeit"):
+        // CHANGE TODO-STATUS TO "Offen" (USER_TAKEN = Null), SEND NOTIFICATION TO USER_OFFERED
+
+
+        // DELETE USER & ORPHANED_ADDRESSES:
+        userRepository.deleteById(id);
+        addressRepository.deleteOrphanedAddresses();
+
+
+        // VERIFY IF USER WAS DELETED:
         Optional<User> optionalUser = userRepository.findById(id);
 
         ResponseBody responseBody = new ResponseBody();
@@ -39,6 +60,8 @@ public class DeleteUserController {
             return new ResponseEntity<>(responseBody, HttpStatus.ACCEPTED);
         }
     }
+
+
 
     @DeleteMapping("/byUsername/{username}")
     public ResponseEntity<ResponseBody> deleteByUsername(
@@ -57,7 +80,7 @@ public class DeleteUserController {
         User user = optionalUser.get();
 
         this.userRepository.deleteById(user.getUserId());
-
+        this.addressRepository.deleteOrphanedAddresses();
 
         optionalUser = userRepository.findByUsername(username);
 

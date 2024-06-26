@@ -134,8 +134,7 @@ public class DataInitializer {
                 "Dingsbums",
                 LocalDate.of(1999, 8,7),
                 "mariadb@yahoo.com",
-                "+436501209348756",
-                LocalDateTime.now()
+                "+436501209348756"
         );
         userRepository.save(user4);
 
@@ -147,10 +146,45 @@ public class DataInitializer {
                 "Nimmtgernmit",
                 LocalDate.of(2002, 3,4),
                 "toni2002@gmail.com",
-                "+4365000998877112",
-                LocalDateTime.now()
+                "+4365000998877112"
         );
         userRepository.save(user5);
+
+        User user6 = new User(
+                address2,
+                "franzi",
+                passwordEncoder.encode("test"),
+                "Franziska",
+                "Otto",
+                LocalDate.of(2000, 1,1),
+                "franziskaotto11@gmail.com",
+                "+436707731405"
+        );
+        userRepository.save(user6);
+
+        User user7 = new User(
+                address1,
+                "hansi",
+                passwordEncoder.encode("test"),
+                "Hannes",
+                "Kurth",
+                LocalDate.of(2000, 2,2),
+                "donnerknecht@gmail.com",
+                "+436504792527"
+        );
+        userRepository.save(user7);
+
+        User user8 = new User(
+                address4,
+                "chris",
+                passwordEncoder.encode("test"),
+                "Christina",
+                "Stamminger",
+                LocalDate.of(2000, 3,3),
+                "christina.stamminger@gmail.com",
+                "+436707731405"
+        );
+        userRepository.save(user8);
 
 
 
@@ -162,7 +196,7 @@ public class DataInitializer {
         todo1.setStatus("In Arbeit");
         todo1.setLocation("Billa, Hofer, Spar");
         todo1.setUserOffered(user1);
-        todo1.setExpiresAt(LocalDateTime.of(2024,6,22, 10,0));
+        todo1.setExpiresAt(LocalDateTime.of(2024,7,22, 10,0));
         todo1.setUserTaken(user3);
 
         todoRepository.save(todo1);
@@ -174,7 +208,7 @@ public class DataInitializer {
         todo2.setStatus("Offen");
         todo2.setLocation("Apotheke");
         todo2.setUserOffered(user3);
-        todo2.setExpiresAt(LocalDateTime.of(2024,6,14, 10,0));
+        todo2.setExpiresAt(LocalDateTime.of(2024,7,24, 10,0));
 
         todoRepository.save(todo2);
 
@@ -185,7 +219,7 @@ public class DataInitializer {
         todo3.setStatus("Offen");
         todo3.setLocation("DM, Bipa, Müller");
         todo3.setUserOffered(user2);
-        todo3.setExpiresAt(LocalDateTime.of(2024,6,16, 10,0));
+        todo3.setExpiresAt(LocalDateTime.of(2024,7,16, 10,0));
 
         todoRepository.save(todo3);
 
@@ -196,7 +230,7 @@ public class DataInitializer {
         todo4.setStatus("Offen");
         todo4.setLocation("Billa, Hofer, Lidl,Spar");
         todo4.setUserOffered(user2);
-        todo4.setExpiresAt(LocalDateTime.of(2024,6,20, 10,0));
+        todo4.setExpiresAt(LocalDateTime.of(2024,7,21, 10,0));
 
         todoRepository.save(todo4);
 
@@ -208,32 +242,32 @@ public class DataInitializer {
         todo5.setLocation("OBI");
         todo5.setUserOffered(user2);
         todo5.setUserTaken(user1);
-        todo5.setExpiresAt(LocalDateTime.of(2024,6,15, 10,0));
+        todo5.setExpiresAt(LocalDateTime.of(2024,7,25, 10,0));
 
         todoRepository.save(todo5);
 
         Todo todo6 = new Todo (
-                user1,
-                user3,
+                user6,
+                user7,
                 "Markt",
                 "Lebensmittel",
                 "12 Eier vom Markt mitnehmen",
                 "Markt oder Bauer oder Supermarkt",
                 null,
-                LocalDateTime.of(2024,6,1,10,0),
+                LocalDateTime.of(2024,8,1,10,0),
                 "In Arbeit"
         );
         todoRepository.save(todo6);
 
         Todo todo7 = new Todo (
-                user3,
+                user8,
                 null,
                 "Bauer",
                 "Lebensmittel",
                 "Äpfel",
                 "Bitte nicht vom Supermarkt",
                 null,
-                LocalDateTime.of(2024,6,8,16,0),
+                LocalDateTime.of(2024,8,8,16,0),
                 "Offen"
         );
         todoRepository.save(todo7);
