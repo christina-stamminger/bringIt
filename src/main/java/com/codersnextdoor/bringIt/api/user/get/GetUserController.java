@@ -35,6 +35,7 @@ public class GetUserController {
         return ResponseEntity.ok(users);
     }
 
+
     @GetMapping("/username/{username}")
     public ResponseEntity<UserResponseBody> getByUsername(
             @PathVariable
@@ -42,8 +43,8 @@ public class GetUserController {
 
         Optional<User> optionalUser = this.userRepository.findByUsername(username);
 
-        if (!optionalUser.isPresent()) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        if (optionalUser.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         User user = optionalUser.get();
@@ -58,8 +59,8 @@ public class GetUserController {
 
         Optional<User> optionalUser = this.userRepository.findById(id);
 
-        if (!optionalUser.isPresent()) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        if (optionalUser.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         User user = optionalUser.get();
@@ -79,7 +80,7 @@ public class GetUserController {
         Optional<User> optionalUser = this.userRepository.findByUsername(username);
         if (optionalUser.isEmpty()) {
             userResponseBody.addErrorMessage("User '" + username + "' doesn't exist.");
-            return new ResponseEntity(userResponseBody, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(userResponseBody, HttpStatus.NOT_FOUND);
         }
 
         User user = optionalUser.get();

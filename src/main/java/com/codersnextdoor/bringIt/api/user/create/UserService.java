@@ -31,7 +31,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserResponseBody createUser(CreateUserDTO createUserDTO) {
+    public UserResponseBody createUser(CreateUserDTO createUserDTO) throws UserAlreadyExistsException {
         UserResponseBody body = new UserResponseBody();
 
         if (createUserDTO == null || StringUtils.isEmpty(createUserDTO.getUsername())) {
@@ -42,8 +42,7 @@ public class UserService {
         // Check if user exists
         Optional<User> optionalUser = userRepository.findByUsername(createUserDTO.getUsername());
         if (optionalUser.isPresent()) {
-            body.addErrorMessage("User already exists.");
-            return body;
+            throw new UserAlreadyExistsException("User already exists.");
         }
 
         // Extract address from DTO
@@ -79,7 +78,6 @@ public class UserService {
         user.setEmail(createUserDTO.getEmail());
         user.setPhone(createUserDTO.getPhone());
 
-
         // Save the new user to the repository
         try {
             userRepository.save(user);
@@ -92,5 +90,12 @@ public class UserService {
         return body;
     }
 
+    // Custom exception for user already exists scenario
+    public static class UserAlreadyExistsException extends RuntimeException {
+        public UserAlreadyExistsException(String message) {
+            super(message);
+        }
+    }
 }
+
 
