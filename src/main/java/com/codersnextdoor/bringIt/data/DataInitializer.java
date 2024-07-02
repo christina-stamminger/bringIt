@@ -99,6 +99,7 @@ public class DataInitializer {
         user1.setEmail("sarah@gmail.com");
         user1.setPhone("+43676444818027");
         user1.setAddress(address1);
+        user1.setBringIts(22);
 
         userRepository.save(user1);
 
@@ -111,6 +112,7 @@ public class DataInitializer {
         user2.setEmail("markus@gmail.com");
         user2.setPhone("+436508280857");
         user2.setAddress(address1);
+        user2.setBringIts(4);
 
         userRepository.save(user2);
 
@@ -123,6 +125,7 @@ public class DataInitializer {
         user3.setEmail("susi@gmail.com");
         user3.setPhone("+436643475661");
         user3.setAddress(address2);
+        user3.setBringIts(34);
 
         userRepository.save(user3);
 
@@ -134,7 +137,8 @@ public class DataInitializer {
                 "Dingsbums",
                 LocalDate.of(1999, 8,7),
                 "mariadb@yahoo.com",
-                "+436501209348756"
+                "+436501209348756",
+                41
         );
         userRepository.save(user4);
 
@@ -146,7 +150,8 @@ public class DataInitializer {
                 "Nimmtgernmit",
                 LocalDate.of(2002, 3,4),
                 "toni2002@gmail.com",
-                "+4365000998877112"
+                "+4365000998877112",
+                15
         );
         userRepository.save(user5);
 
@@ -158,7 +163,8 @@ public class DataInitializer {
                 "Otto",
                 LocalDate.of(2000, 1,1),
                 "franziskaotto11@gmail.com",
-                "+436707731405"
+                "+436707731405",
+                79
         );
         userRepository.save(user6);
 
@@ -170,7 +176,8 @@ public class DataInitializer {
                 "Kurth",
                 LocalDate.of(2000, 2,2),
                 "donnerknecht@gmail.com",
-                "+436504792527"
+                "+436504792527",
+                57
         );
         userRepository.save(user7);
 
@@ -182,7 +189,8 @@ public class DataInitializer {
                 "Stamminger",
                 LocalDate.of(2000, 3,3),
                 "christina.stamminger@gmail.com",
-                "+436707731405"
+                "+436707731405",
+                38
         );
         userRepository.save(user8);
 
@@ -272,7 +280,31 @@ public class DataInitializer {
         );
         todoRepository.save(todo7);
 
+        Todo todo8 = new Todo (
+                user3,
+                null,
+                "Pensionistenwohnheim",
+                "Packerl von Pensionistenheim holen",
+                "Packerl für Familie Schulz",
+                "Ein Papiersack, ca 3 kg",
+                null,
+                LocalDateTime.of(2024,6,8,16,0),
+                "Abgelaufen"
+        );
+        todoRepository.save(todo8);
 
+        Todo todo9 = new Todo (
+                user3,
+                user1,
+                "Sportgeschäft",
+                "Rollen für Scooter ",
+                "2 Neue Rollen für Scooter (Micro) ",
+                "Habe mit Geschäft telefoniert. Sie wissen bescheid. Bitte dazusagen, dass es für Susi Strudel ist",
+                null,
+                LocalDateTime.of(2024,7,22,14,0),
+                "Erledigt"
+        );
+        todoRepository.save(todo8);
 
 
     }

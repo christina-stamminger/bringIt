@@ -77,6 +77,7 @@ public class UserService {
         user.setDateOfBirth(createUserDTO.getDateOfBirth());
         user.setEmail(createUserDTO.getEmail());
         user.setPhone(createUserDTO.getPhone());
+        user.setBringIts(0);
 
         // Save the new user to the repository
         try {

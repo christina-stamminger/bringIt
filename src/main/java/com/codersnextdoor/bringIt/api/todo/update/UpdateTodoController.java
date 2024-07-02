@@ -7,6 +7,7 @@ import com.codersnextdoor.bringIt.api.user.User;
 import com.codersnextdoor.bringIt.api.user.UserRepository;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
@@ -25,6 +26,11 @@ public class UpdateTodoController {
     private UserRepository userRepository;
     @Autowired
     private UpdateTodoService updateTodoService;
+
+    @Value("${add.bringIts.for.accept}")
+    private Integer ADD_BRINGITS_FOR_ACCEPT;
+    @Value("${add.bringIts.for.complete}")
+    private Integer ADD_BRINGITS_FOR_COMPLETE;
 
 
     /**
@@ -146,7 +152,9 @@ public class UpdateTodoController {
             @RequestBody
             UpdateTodoStatusDTO updateTodoStatusDTO) {
 
+
         TodoResponseBody todoResponseBody = new TodoResponseBody();
+
 
 
         // CHECK IF REQUEST_BODY IS EMPTY:
@@ -164,6 +172,9 @@ public class UpdateTodoController {
         }
         Todo updateTodo = optionalTodo.get();
 
+        System.out.println("updateTodoStatusDTO: " + updateTodoStatusDTO.getTodoId() + " / "
+                + updateTodoStatusDTO.getUserTakenId() + " / "
+                + updateTodoStatusDTO.getStatus());
 
         // VALIDATE USER_TAKEN:
         if (ObjectUtils.isEmpty(updateTodoStatusDTO.getUserTakenId()))  {
@@ -204,16 +215,28 @@ public class UpdateTodoController {
             return new ResponseEntity<>(todoResponseBody, HttpStatus.BAD_REQUEST);
         }
 
+        // CHANGE BringIts AMOUNT FOR USER:
+        String updateTodoStatus = updateTodoStatusDTO.getStatus();
+        switch (updateTodoStatus) {
+            case "Offen":
+                updateTodoService.changeBringItsAmount(userTaken, ((-1) * ADD_BRINGITS_FOR_ACCEPT));
+                break;
+            case "In Arbeit":
+                updateTodoService.changeBringItsAmount(userTaken, ADD_BRINGITS_FOR_ACCEPT);
+                break;
+            case "Erledigt":
+                updateTodoService.changeBringItsAmount(userTaken, ADD_BRINGITS_FOR_COMPLETE);
+                break;
+        }
 
         // SEND EMAIL NOTIFICATION TO USER_OFFERED:
-
         updateTodoService.createStatusNotificationMail(updateTodoStatusDTO.getStatus(), updateTodo, userTaken);
-
 
         // CHANGE STATUS AND USER_TAKEN / SAVE:
         if (updateTodoStatusDTO.getStatus().equals("Offen")) {
             userTaken = null;
         }
+
         updateTodo.setStatus(updateTodoStatusDTO.getStatus());
         updateTodo.setUserTaken(userTaken);
 
