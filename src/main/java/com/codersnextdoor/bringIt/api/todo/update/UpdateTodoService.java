@@ -3,6 +3,8 @@ package com.codersnextdoor.bringIt.api.todo.update;
 import com.codersnextdoor.bringIt.api.EmailService;
 import com.codersnextdoor.bringIt.api.todo.Todo;
 import com.codersnextdoor.bringIt.api.user.User;
+import com.codersnextdoor.bringIt.api.user.UserRepository;
+import com.codersnextdoor.bringIt.api.user.create.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UpdateTodoService {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private EmailService emailService;
@@ -67,6 +72,17 @@ public class UpdateTodoService {
                 + ", email to: "
                 + updateTodo.getUserOffered().getEmail()
                 + ".");
+    }
+
+    @Async
+    public void changeBringItsAmount (User user, int bringItsChange) {
+
+        int presentBringITs = user.getBringIts();
+        int newBringIts = presentBringITs + bringItsChange;
+
+        user.setBringIts(newBringIts);
+        userRepository.save(user);
+
     }
 
 }

@@ -69,13 +69,16 @@ public class User {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column
+    private int bringIts;
+
     //empty constructor
     public User() {
 
     }
 
     //constructor
-    public User(Address address, String username, String password, String firstName, String lastName, LocalDate dateOfBirth,String email, String phone) {
+    public User(Address address, String username, String password, String firstName, String lastName, LocalDate dateOfBirth,String email, String phone, int bringIts) {
 
         this.address = address;
         this.username = username;
@@ -85,6 +88,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.phone = phone;
+        this.bringIts = bringIts;
     }
 
 
