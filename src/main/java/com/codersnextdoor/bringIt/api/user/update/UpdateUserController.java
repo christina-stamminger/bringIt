@@ -28,7 +28,7 @@ public class UpdateUserController {
             UpdateUserDTO updateUserDTO) {
 
         if (updateUserDTO == null || updateUserDTO.getUserId() < 1) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         Optional<User> optionalUser = this.userRepository.findById(updateUserDTO.getUserId());
