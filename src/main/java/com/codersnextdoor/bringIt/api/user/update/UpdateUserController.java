@@ -1,5 +1,6 @@
 package com.codersnextdoor.bringIt.api.user.update;
 
+import com.codersnextdoor.bringIt.api.address.Address;
 import com.codersnextdoor.bringIt.api.user.User;
 import com.codersnextdoor.bringIt.api.user.UserRepository;
 import com.codersnextdoor.bringIt.api.user.UserResponseBody;
@@ -21,12 +22,8 @@ public class UpdateUserController {
     @Autowired
     UserRepository userRepository;
 
-
     @PutMapping
-    public ResponseEntity<UserResponseBody> update(
-            @RequestBody
-            UpdateUserDTO updateUserDTO) {
-
+    public ResponseEntity<UserResponseBody> update(@RequestBody UpdateUserDTO updateUserDTO) {
         if (updateUserDTO == null || updateUserDTO.getUserId() < 1) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -36,16 +33,15 @@ public class UpdateUserController {
         if (optionalUser.isEmpty()) {
             UserResponseBody response = new UserResponseBody();
             response.addErrorMessage("Could not find user by id '" + updateUserDTO.getUserId());
-
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
         User user = optionalUser.get();
 
-        if(!StringUtils.isEmpty(updateUserDTO.getFirstName())) {
+        if (!StringUtils.isEmpty(updateUserDTO.getFirstName())) {
             user.setFirstName(updateUserDTO.getFirstName());
         }
-        if(!StringUtils.isEmpty(updateUserDTO.getLastName())) {
+        if (!StringUtils.isEmpty(updateUserDTO.getLastName())) {
             user.setLastName(updateUserDTO.getLastName());
         }
         if (updateUserDTO.getDateOfBirth() != null) {
@@ -56,6 +52,22 @@ public class UpdateUserController {
         }
         if (!StringUtils.isEmpty(updateUserDTO.getPhone())) {
             user.setPhone(updateUserDTO.getPhone());
+        }
+        if (updateUserDTO.getAddress() != null) {
+            Address address = user.getAddress();
+            if (address == null) {
+                address = new Address();
+                user.setAddress(address);
+            }
+            if (!StringUtils.isEmpty(updateUserDTO.getAddress().getStreetNumber())) {
+                address.setStreetNumber(updateUserDTO.getAddress().getStreetNumber());
+            }
+            if (!StringUtils.isEmpty(updateUserDTO.getAddress().getCity())) {
+                address.setCity(updateUserDTO.getAddress().getCity());
+            }
+            if (!StringUtils.isEmpty(updateUserDTO.getAddress().getPostalCode())) {
+                address.setPostalCode(updateUserDTO.getAddress().getPostalCode());
+            }
         }
 
         this.userRepository.save(user);
