@@ -7,6 +7,7 @@ import com.codersnextdoor.bringIt.api.user.UserResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,9 @@ public class UpdateUserController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @PutMapping
     public ResponseEntity<UserResponseBody> update(@RequestBody UpdateUserDTO updateUserDTO) {
@@ -68,6 +72,9 @@ public class UpdateUserController {
             if (!StringUtils.isEmpty(updateUserDTO.getAddress().getPostalCode())) {
                 address.setPostalCode(updateUserDTO.getAddress().getPostalCode());
             }
+        }
+        if (!StringUtils.isEmpty(updateUserDTO.getPassword())) {
+            user.setPassword(passwordEncoder.encode(updateUserDTO.getPassword()));
         }
 
         this.userRepository.save(user);
