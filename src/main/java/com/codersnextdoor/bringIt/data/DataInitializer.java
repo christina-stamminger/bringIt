@@ -86,6 +86,75 @@ public class DataInitializer {
 
         addressRepository.save(address4);
 
+        Address address5 = new Address(
+                "Pötzleinsdorferstrasse 79",
+                "1180",
+                "Wien"
+        );
+        addressRepository.save(address5);
+
+        Address address6 = new Address(
+                "Khekgasse 17",
+                "1230",
+                "Wien"
+        );
+        addressRepository.save(address6);
+
+        Address address7 = new Address(
+                "Leopold-Böhm-Straße 5",
+                "1030",
+                "Wien"
+        );
+        addressRepository.save(address7);
+
+        Address address8 = new Address(
+                "Erdbergerstraße 218",
+                "1030",
+                "Wien"
+        );
+        addressRepository.save(address8);
+
+        Address address9 = new Address(
+                "Medwedweg 14",
+                "1110",
+                "Wien"
+        );
+        addressRepository.save(address9);
+
+        Address address10 = new Address(
+                "Kopalgasse 60",
+                "1110",
+                "Wien"
+        );
+        addressRepository.save(address10);
+
+        Address address11 = new Address(
+                "Wilhelm-Weber-Weg 4",
+                "1110",
+                "Wien"
+        );
+        addressRepository.save(address11);
+
+        Address address12 = new Address(
+                "Holzergasse 9",
+                "1110",
+                "Wien"
+        );
+        addressRepository.save(address12);
+
+        Address address13 = new Address(
+                "Lechnerstrasse 6",
+                "1030",
+                "Wien"
+        );
+        addressRepository.save(address13);
+
+        Address address14 = new Address(
+                "Landsgtraßer Hauptstraße 83-85",
+                "1030",
+                "Wien"
+        );
+        addressRepository.save(address14);
 
         // Create and save user
         User user1 = new User();
@@ -111,7 +180,7 @@ public class DataInitializer {
         user2.setPassword(passwordEncoder.encode("test")); // Hash the password
         user2.setEmail("markus@gmail.com");
         user2.setPhone("+436508280857");
-        user2.setAddress(address1);
+        user2.setAddress(address7);
         user2.setBringIts(4);
 
         userRepository.save(user2);
@@ -130,7 +199,7 @@ public class DataInitializer {
         userRepository.save(user3);
 
         User user4 = new User(
-                address3,
+                address8,
                 "mariadb",
                 passwordEncoder.encode("test"),
                 "Maria",
@@ -156,7 +225,7 @@ public class DataInitializer {
         userRepository.save(user5);
 
         User user6 = new User(
-                address2,
+                address6,
                 "franzi",
                 passwordEncoder.encode("test"),
                 "Franziska",
@@ -169,7 +238,7 @@ public class DataInitializer {
         userRepository.save(user6);
 
         User user7 = new User(
-                address1,
+                address5,
                 "hansi",
                 passwordEncoder.encode("test"),
                 "Hannes",
@@ -182,7 +251,7 @@ public class DataInitializer {
         userRepository.save(user7);
 
         User user8 = new User(
-                address4,
+                address3,
                 "chris",
                 passwordEncoder.encode("test"),
                 "Christina",
@@ -193,6 +262,97 @@ public class DataInitializer {
                 38
         );
         userRepository.save(user8);
+
+        User user9 = new User(
+                address9,
+                "hadschibradschi",
+                passwordEncoder.encode("test"),
+                "Holger",
+                "Grausam",
+                LocalDate.of(1995, 2,17),
+                "holger.grausam@gmail.com",
+                "+436645598762",
+                3
+        );
+        userRepository.save(user9);
+
+        User user10 = new User(
+                address10,
+                "nudelking",
+                passwordEncoder.encode("test"),
+                "Konrad",
+                "Nudel",
+                LocalDate.of(1997, 12,14),
+                "nudelking@gmail.com",
+                "+436509182736",
+                30
+        );
+        userRepository.save(user10);
+
+        User user11 = new User(
+                address11,
+                "samariter",
+                passwordEncoder.encode("test"),
+                "Samuel",
+                "Ritter",
+                LocalDate.of(2002, 11,24),
+                "sam.ritter@yahoo.com",
+                "+436617685940",
+                64
+        );
+        userRepository.save(user11);
+
+        User user12 = new User(
+                address12,
+                "mjam-mjam",
+                passwordEncoder.encode("test"),
+                "Miriam",
+                "Jammer",
+                LocalDate.of(2004, 10,2),
+                "mjam@yahoo.com",
+                "+436636336522",
+                4
+        );
+        userRepository.save(user12);
+
+        User user13 = new User(
+                address13,
+                "käseglocker",
+                passwordEncoder.encode("test"),
+                "Gesine",
+                "Glöckner",
+                LocalDate.of(2005, 9,20),
+                "gesine0509@outlook.com",
+                "+436605504403",
+                49
+        );
+        userRepository.save(user13);
+
+        User user14 = new User(
+                address14,
+                "nichtweitweg",
+                passwordEncoder.encode("test"),
+                "Waltraud",
+                "Niessner",
+                LocalDate.of(2007, 8,11),
+                "nichtweit-07@outlook.com",
+                "+436601020304",
+                104
+        );
+        userRepository.save(user14);
+
+        User user15 = new User(
+                address12,
+                "wohntauchda",
+                passwordEncoder.encode("test"),
+                "Wilhelmine",
+                "Taucher",
+                LocalDate.of(2008, 6,30),
+                "wt-wtd20080630@outlook.com",
+                "+4366090080023",
+                22
+        );
+        userRepository.save(user15);
 
 
 
@@ -226,7 +386,7 @@ public class DataInitializer {
         todo3.setAddInfo("Bitte von Hipp, Alternative DM Eigenmarke");
         todo3.setStatus("Offen");
         todo3.setLocation("DM, Bipa, Müller");
-        todo3.setUserOffered(user2);
+        todo3.setUserOffered(user4);
         todo3.setExpiresAt(LocalDateTime.of(2024,7,16, 10,0));
 
         todoRepository.save(todo3);
@@ -248,7 +408,7 @@ public class DataInitializer {
         todo5.setAddInfo("Bitte von OBI Baumarkt");
         todo5.setStatus("In Arbeit");
         todo5.setLocation("OBI");
-        todo5.setUserOffered(user2);
+        todo5.setUserOffered(user5);
         todo5.setUserTaken(user1);
         todo5.setExpiresAt(LocalDateTime.of(2024,7,25, 10,0));
 
@@ -275,37 +435,140 @@ public class DataInitializer {
                 "Äpfel",
                 "Bitte nicht vom Supermarkt",
                 null,
-                LocalDateTime.of(2024,8,8,16,0),
+                LocalDateTime.of(2024,7,20,16,0),
                 "Offen"
         );
         todoRepository.save(todo7);
 
         Todo todo8 = new Todo (
-                user3,
+                user7,
                 null,
-                "Pensionistenwohnheim",
-                "Packerl von Pensionistenheim holen",
+                "Pensionistenwohnheim sowieso",
+                "Packerl von Pensionistenheim abholen",
                 "Packerl für Familie Schulz",
                 "Ein Papiersack, ca 3 kg",
                 null,
-                LocalDateTime.of(2024,6,8,16,0),
-                "Abgelaufen"
+                LocalDateTime.of(2024,7,23,17,30),
+                "Offen"
         );
         todoRepository.save(todo8);
 
         Todo todo9 = new Todo (
-                user3,
-                user1,
+                user9,
+                null,
                 "Sportgeschäft",
                 "Rollen für Scooter ",
                 "2 Neue Rollen für Scooter (Micro) ",
-                "Habe mit Geschäft telefoniert. Sie wissen bescheid. Bitte dazusagen, dass es für Susi Strudel ist",
+                "Habe mit Geschäft telefoniert. Verkäufer weiss bescheid. Unter Namen 'Grausem' hinterlegt.",
                 null,
                 LocalDateTime.of(2024,7,22,14,0),
+                "Offen"
+        );
+        todoRepository.save(todo9);
+
+        Todo todo10 = new Todo (
+                user10,
+                null,
+                "AsiaResaturant oder ähnliches",
+                "Nudeln mit Hühnerfleisch",
+                "Eine Portion gebackene Nudeln mit Hühnerfleisch und Ei",
+                "Soll maximal 10 EUro kosten",
+                null,
+                LocalDateTime.of(2024,7,20,15,20),
+                "Offen"
+        );
+        todoRepository.save(todo10);
+
+        Todo todo11 = new Todo (
+                user11,
+                null,
+                "Drogeriemarkt oder Supermark",
+                "Windeln",
+                "1 Pkg Pampers Baby Dry, Gr.4",
+                "Wenn Größe 4 nicht vorhanden, bitte kurz anrufen",
+                null,
+                LocalDateTime.of(2024,7,21,10,10),
+                "Offen"
+        );
+        todoRepository.save(todo11);
+
+        Todo todo12 = new Todo (
+                user12,
+                null,
+                "Supermarkt, Tankstelle, Markt",
+                "Grillgut",
+                "Würstel und/oder FLeisch zum Grillen für 4 Personen",
+                "Keine Käsekreiner, sonst alles gut",
+                null,
+                LocalDateTime.of(2024,7,21,19,0),
+                "Offen"
+        );
+        todoRepository.save(todo12);
+
+        Todo todo13 = new Todo (
+                user13,
+                null,
+                "Hofer oder Billa",
+                "Mehl und Germ",
+                "Bitte 1 Pkg frischen Germ und 2 kg Dinkelvollkornmehl",
+                null,
+                null,
+                LocalDateTime.of(2024,7,24,12,0),
+                "Offen"
+        );
+        todoRepository.save(todo13);
+
+        Todo todo14 = new Todo (
+                user14,
+                null,
+                null,
+                "Bier",
+                "1 6er-tragerl Bier",
+                "Stiegel oder Gösser",
+                null,
+                LocalDateTime.of(2024,7,23,23,0),
+                "Offen"
+        );
+        todoRepository.save(todo14);
+
+        Todo todo15 = new Todo (
+                user15,
+                null,
+                null,
+                "Hafermilch",
+                "bitte 2 Liter Hafermilch mitnehmen",
+                "wenn möglich Barista-Hafermilch",
+                null,
+                LocalDateTime.of(2024,7,22,9,0),
+                "Offen"
+        );
+        todoRepository.save(todo15);
+
+        Todo todo16 = new Todo (
+                user3,
+                null,
+                null,
+                "Joghurt",
+                "bitte 2 grosse Pkg Joghurt natur (je 1/2 kg)",
+                null,
+                null,
+                LocalDateTime.of(2024,7,15,12,0),
+                "Abgelaufen"
+        );
+        todoRepository.save(todo16);
+
+        Todo todo17 = new Todo (
+                user3,
+                user10,
+                "Supermarkt oder Bäcker",
+                "Brot",
+                "bitte 1 Kg Roggenbrot mitnehmen",
+                null,
+                null,
+                LocalDateTime.of(2024,7,19,18,0),
                 "Erledigt"
         );
-        todoRepository.save(todo8);
-
+        todoRepository.save(todo17);
 
     }
 }

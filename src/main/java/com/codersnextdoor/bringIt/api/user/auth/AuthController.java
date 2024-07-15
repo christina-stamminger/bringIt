@@ -2,8 +2,10 @@ package com.codersnextdoor.bringIt.api.user.auth;
 
 import com.codersnextdoor.bringIt.api.user.User;
 import com.codersnextdoor.bringIt.api.user.UserRepository;
+import com.codersnextdoor.bringIt.api.user.UserResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 
 @RestController
@@ -42,16 +46,29 @@ public class AuthController {
     // endpoint for user login
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginDTO loginDTO) {
+//    public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         LOG.debug("User logged in: {}", loginDTO.getUsername());
 
-        // Fetch user details including userId
-        User user = userRepository.findByUsername(loginDTO.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found: " + loginDTO.getUsername()));
+        UserResponseBody userResponseBody = new UserResponseBody();
+
+        // CHECK IF USER EXISTS
+        Optional<User> optionalUser = this.userRepository.findByUsername(loginDTO.getUsername());
+        if (optionalUser.isEmpty()) {
+            System.out.println("User not found");
+            userResponseBody.addErrorMessage("User '" + loginDTO.getUsername() + "' doesn't exist.");
+            return new ResponseEntity<>(userResponseBody, HttpStatus.NOT_FOUND);
+        }
+        User user = optionalUser.get();
+
+//
+//        // Fetch user details including userId
+//        User user = userRepository.findByUsername(loginDTO.getUsername())
+//                .orElseThrow(() -> new RuntimeException("User not found: " + loginDTO.getUsername()));
 
         System.out.println("User ID: " + user.getUserId());
 
