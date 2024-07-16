@@ -30,7 +30,7 @@ public class GetUserService {
         StringBuilder sbHeader = new StringBuilder();
         sbHeader.append("Es wurde ein neues Passwort für Sie generiert.\n")
                 .append("Bitte verwenden sie dieses für den nächsten Login bei bringIt\n")
-                .append("und ändern diesees bei Bedarf unter 'settings'.\n\n");
+                .append("und ändern diesees bei Bedarf unter 'Profil'.\n\n");
 
         StringBuilder sbLoginData = new StringBuilder();
         sbLoginData.append("Username: ").append(user.getUsername()).append("\n");

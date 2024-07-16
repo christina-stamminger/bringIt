@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,11 +49,10 @@ public class AuthController {
     @PostMapping("/login")
 //    public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginDTO loginDTO) {
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        LOG.debug("User logged in: {}", loginDTO.getUsername());
+
+        // NOT WORKING !!! This log never appears in console and the errorHandling can't be done.
+        // It appears that the Spring Security filter chain is processing the request before it reaches the controller method.
+        System.out.println("username: " + loginDTO.getUsername());
 
         UserResponseBody userResponseBody = new UserResponseBody();
 
@@ -63,12 +63,16 @@ public class AuthController {
             userResponseBody.addErrorMessage("User '" + loginDTO.getUsername() + "' doesn't exist.");
             return new ResponseEntity<>(userResponseBody, HttpStatus.NOT_FOUND);
         }
-        User user = optionalUser.get();
 
-//
-//        // Fetch user details including userId
-//        User user = userRepository.findByUsername(loginDTO.getUsername())
-//                .orElseThrow(() -> new RuntimeException("User not found: " + loginDTO.getUsername()));
+        try {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        LOG.debug("User logged in: {}", loginDTO.getUsername());
+
+        User user = optionalUser.get();
 
         System.out.println("User ID: " + user.getUserId());
 
@@ -77,5 +81,10 @@ public class AuthController {
 
         // Return token in JSON response
         return ResponseEntity.ok(new TokenResponseDTO(token, user.getUserId()));
+    } catch (BadCredentialsException e) {
+            System.out.println("Invalid credentials");
+        userResponseBody.addErrorMessage("Invalid username or password.");
+        return new ResponseEntity<>(userResponseBody, HttpStatus.UNAUTHORIZED);
+        }
     }
 }
