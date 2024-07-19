@@ -570,5 +570,151 @@ public class DataInitializer {
         );
         todoRepository.save(todo17);
 
+        // Some more Data by ChatGPT:
+
+        // Create and save additional addresses
+        Address address18 = new Address("Guglgasse 15", "1110", "Wien");
+        Address address19 = new Address("Kanalwächterhausweg 5", "1020", "Wien");
+        Address address20 = new Address("Schnirchgasse 9", "1030", "Wien");
+        Address address21 = new Address("Modecenterstrasse 1", "1030", "Wien");
+        Address address22 = new Address("Holzergasse 3", "1110", "Wien");
+        Address address23 = new Address("Kanikgasse 38", "1110", "Wien");
+        Address address24 = new Address("Grillgasse 43", "1110", "Wien");
+        Address address25 = new Address("Dietrichgasse 59", "1030", "Wien");
+        Address address26 = new Address("Baumschulstraßsse 2", "3013", "Tullnerbach-Lawies");
+        Address address27 = new Address("Badgasse 11", "3013", "Pressbaum");
+
+        addressRepository.saveAll(List.of(address18, address19, address20, address21, address22, address23, address24, address25, address26, address27));
+
+        // Create and save additional users
+        User user18 = new User(address18, "thomasbauer", passwordEncoder.encode("test"), "Thomas", "Bauer", LocalDate.of(1993, 4, 15), "thomas.bauer@gmail.com", "+436645509876", 10);
+        User user19 = new User(address19, "anna88", passwordEncoder.encode("test"), "Anna", "Müller", LocalDate.of(1988, 7, 22), "anna.mueller@gmail.com", "+436645509877", 12);
+        User user20 = new User(address20, "lukas.klein", passwordEncoder.encode("test"), "Lukas", "Klein", LocalDate.of(1995, 11, 11), "lukas.klein@gmail.com", "+436645509878", 15);
+        User user21 = new User(address21, "laura.fischer", passwordEncoder.encode("test"), "Laura", "Fischer", LocalDate.of(1990, 9, 29), "laura.fischer@gmail.com", "+436645509879", 20);
+        User user22 = new User(address22, "peter.schmidt", passwordEncoder.encode("test"), "Peter", "Schmidt", LocalDate.of(1985, 1, 4), "peter.schmidt@gmail.com", "+436645509880", 25);
+        User user23 = new User(address23, "julia.wagner", passwordEncoder.encode("test"), "Julia", "Wagner", LocalDate.of(1992, 3, 17), "julia.wagner@gmail.com", "+436645509881", 30);
+        User user24 = new User(address24, "daniel.schwarz", passwordEncoder.encode("test"), "Daniel", "Schwarz", LocalDate.of(1991, 6, 30), "daniel.schwarz@gmail.com", "+436645509882", 35);
+        User user25 = new User(address25, "melanie.weber", passwordEncoder.encode("test"), "Melanie", "Weber", LocalDate.of(1987, 8, 18), "melanie.weber@gmail.com", "+436645509883", 40);
+        User user26 = new User(address26, "alex.braun", passwordEncoder.encode("test"), "Alexander", "Braun", LocalDate.of(1989, 12, 12), "alex.braun@gmail.com", "+436645509884", 45);
+        User user27 = new User(address27, "stephanie.mayer", passwordEncoder.encode("test"), "Stephanie", "Mayer", LocalDate.of(1994, 10, 10), "stephanie.mayer@gmail.com", "+436645509885", 50);
+
+        userRepository.saveAll(List.of(user18, user19, user20, user21, user22, user23, user24, user25, user26, user27));
+
+        // Create and save additional todos
+        Todo todo18 = new Todo(
+                user18,
+                null,
+                "Supermarktbesuch",
+                "Bitte um folgende Mitnahme: 1 Packung Kaffee, 1 Packung Zucker",
+                "Keine speziellen Marken",
+                null,
+                null,
+                LocalDateTime.of(2024, 7, 25, 10, 0),
+                "Offen"
+        );
+        Todo todo19 = new Todo(
+                user19,
+                null,
+                "Medikamentenabholung",
+                "Bitte Mexalen 500mg abholen",
+                "Bereits bezahlt, abholbereit",
+                null,
+                null,
+                LocalDateTime.of(2024, 7, 26, 10, 0),
+                "Offen"
+        );
+        Todo todo20 = new Todo(
+                user20,
+                null,
+                "Drogeriebesuch",
+                "Bitte 2 Flaschen Shampoo besorgen",
+                "Marken egal, bitte keine Sonderaktionen",
+                null,
+                null,
+                LocalDateTime.of(2024, 7, 27, 10, 0),
+                "Offen"
+        );
+        Todo todo21 = new Todo(
+                user21,
+                null,
+                "Obst und Gemüse",
+                "Bitte Äpfel und Karotten mitbringen",
+                "Bio bevorzugt",
+                null,
+                null,
+                LocalDateTime.of(2024, 7, 28, 10, 0),
+                "Offen"
+        );
+        Todo todo22 = new Todo(
+                user22,
+                null,
+                "Baustellenbedarf",
+                "1 Packung Nägel und 1 Hammer",
+                "Normale Größe",
+                null,
+                null,
+                LocalDateTime.of(2024, 7, 29, 10, 0),
+                "Offen"
+        );
+        Todo todo23 = new Todo(
+                user23,
+                null,
+                "Getränkeeinkauf",
+                "1 Kasten Mineralwasser",
+                "Keine speziellen Anforderungen",
+                null,
+                null,
+                LocalDateTime.of(2024, 7, 30, 10, 0),
+                "Offen"
+        );
+        Todo todo24 = new Todo(
+                user24,
+                null,
+                "Packerl abholen",
+                "Packerl für Familie Schmidt",
+                "Abholung bei der Postfiliale",
+                null,
+                null,
+                LocalDateTime.of(2024, 7, 31, 10, 0),
+                "Offen"
+        );
+        Todo todo25 = new Todo(
+                user25,
+                null,
+                "Tierbedarf",
+                "Katzenfutter und Katzenstreu besorgen",
+                "Marken egal, bitte keine Sonderaktionen",
+                null,
+                null,
+                LocalDateTime.of(2024, 8, 1, 10, 0),
+                "Offen"
+        );
+        Todo todo26 = new Todo(
+                user26,
+                null,
+                "Backzutaten",
+                "1 kg Mehl und 1 Packung Backpulver",
+                "Marken egal",
+                null,
+                null,
+                LocalDateTime.of(2024, 8, 2, 10, 0),
+                "Offen"
+        );
+        Todo todo27 = new Todo(
+                user27,
+                null,
+                "Grillzutaten",
+                "Würstchen und Ketchup besorgen",
+                "Keine speziellen Marken",
+                null,
+                null,
+                LocalDateTime.of(2024, 8, 3, 10, 0),
+                "Offen"
+        );
+
+        todoRepository.saveAll(List.of(todo18, todo19, todo20, todo21, todo22, todo23, todo24, todo25, todo26, todo27));
+
+
+
     }
 }
